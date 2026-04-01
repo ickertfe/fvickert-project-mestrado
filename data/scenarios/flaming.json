@@ -1,0 +1,109 @@
+{
+  "id": "scenario-flaming-001",
+  "name": "Discussão Acalorada no Grupo de Trabalho",
+  "description": "Simulação de conflito onde um participante se torna hostil após discordância sobre um projeto",
+  "type": "FLAMING",
+  "participants": [
+    {
+      "id": "part-1",
+      "name": "Carlos",
+      "avatar": "/avatars/carlos.png",
+      "role": "AGGRESSOR"
+    },
+    {
+      "id": "part-2",
+      "name": "Marina",
+      "avatar": "/avatars/marina.png",
+      "role": "VICTIM"
+    },
+    {
+      "id": "part-3",
+      "name": "Pedro",
+      "avatar": "/avatars/pedro.png",
+      "role": "NEUTRAL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "participantId": "part-2",
+      "content": "Pessoal, terminei a minha parte do relatório. Podem revisar?",
+      "type": "TEXT",
+      "appearDelay": 0,
+      "typingDuration": 2000,
+      "order": 1
+    },
+    {
+      "id": "msg-2",
+      "participantId": "part-1",
+      "content": "Já vi. Tá bem fraco, sinceramente.",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1500,
+      "order": 2
+    },
+    {
+      "id": "msg-3",
+      "participantId": "part-2",
+      "content": "Pode me dizer o que posso melhorar?",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 1800,
+      "order": 3
+    },
+    {
+      "id": "msg-4",
+      "participantId": "part-1",
+      "content": "Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.",
+      "type": "TEXT",
+      "appearDelay": 1000,
+      "typingDuration": 2500,
+      "order": 4
+    },
+    {
+      "id": "msg-5",
+      "participantId": "part-3",
+      "content": "Calma, Carlos...",
+      "type": "TEXT",
+      "appearDelay": 1500,
+      "typingDuration": 1000,
+      "order": 5
+    },
+    {
+      "id": "msg-6",
+      "participantId": "part-1",
+      "content": "Cala a boca, Pedro. Ninguém pediu sua opinião.",
+      "type": "TEXT",
+      "appearDelay": 500,
+      "typingDuration": 1200,
+      "order": 6
+    },
+    {
+      "id": "msg-7",
+      "participantId": "part-1",
+      "content": "Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.",
+      "type": "TEXT",
+      "appearDelay": 800,
+      "typingDuration": 2000,
+      "order": 7
+    },
+    {
+      "id": "msg-8",
+      "participantId": "part-2",
+      "content": "😢",
+      "type": "EMOJI",
+      "appearDelay": 2000,
+      "typingDuration": null,
+      "order": 8
+    },
+    {
+      "id": "msg-9",
+      "participantId": "part-1",
+      "content": "Vai chorar agora? Que patético!",
+      "type": "TEXT",
+      "appearDelay": 1000,
+      "typingDuration": 1500,
+      "order": 9
+    }
+  ]
+}

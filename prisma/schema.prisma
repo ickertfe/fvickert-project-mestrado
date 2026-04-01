@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Cenário de cyberbullying
+// type: FLAMING | SOCIAL_EXCLUSION | DENIGRATION
+model Scenario {
+  id          String       @id @default(cuid())
+  name        String
+  description String
+  type        String       // FLAMING, SOCIAL_EXCLUSION, DENIGRATION
+  isActive    Boolean      @default(true)
+  messages    Message[]
+  sessions    Session[]
+  participants ChatParticipant[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// Participante do chat (personagem fictício)
+// role: AGGRESSOR | VICTIM | NEUTRAL
+model ChatParticipant {
+  id         String    @id @default(cuid())
+  name       String
+  avatar     String?
+  role       String    // AGGRESSOR, VICTIM, NEUTRAL
+  scenarioId String
+  scenario   Scenario  @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  messages   Message[]
+}
+
+// Mensagem do cenário
+// type: TEXT | AUDIO | EMOJI | IMAGE
+model Message {
+  id             String          @id @default(cuid())
+  scenarioId     String
+  scenario       Scenario        @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  participantId  String
+  participant    ChatParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  content        String
+  type           String          // TEXT, AUDIO, EMOJI, IMAGE
+  appearDelay    Int             // ms após início ou msg anterior
+  typingDuration Int?            // ms de "digitando..."
+  order          Int
+  metadata       String?         // JSON string for additional data
+  actions        MessageAction[]
+  createdAt      DateTime        @default(now())
+}
+
+// Sessão de participante
+// role: TUTOR | BYSTANDER
+model Session {
+  id                   String            @id @default(cuid())
+  participantName      String
+  participantEmail     String
+  role                 String            // TUTOR, BYSTANDER
+  scenarioId           String
+  scenario             Scenario          @relation(fields: [scenarioId], references: [id])
+  disclaimerAccepted   Boolean           @default(false)
+  disclaimerAcceptedAt DateTime?
+  startedAt            DateTime?
+  completedAt          DateTime?
+  actions              MessageAction[]
+  metrics              SessionMetrics?
+  notes                Note[]
+  bystanderAnswers     BystanderAnswer[]
+  createdAt            DateTime          @default(now())
+}
+
+// Ação do tutor em uma mensagem
+// type: DELETE_MESSAGE | WARN_MESSAGE | KICK_PARTICIPANT | MARK_DANGER | MARK_ATTENTION | ADD_NOTE | UNDO
+model MessageAction {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  messageId String
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type      String   // DELETE_MESSAGE, WARN_MESSAGE, KICK_PARTICIPANT, MARK_DANGER, MARK_ATTENTION, ADD_NOTE, UNDO
+  timestamp DateTime @default(now())
+  undone    Boolean  @default(false)
+  undoneAt  DateTime?
+  metadata  String?  // JSON string for additional data
+}
+
+// Métricas da sessão
+model SessionMetrics {
+  id               String   @id @default(cuid())
+  sessionId        String   @unique
+  session          Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  totalDuration    Int      // ms
+  firstActionTime  Int?     // ms até primeira ação
+  totalActions     Int
+  totalUndos       Int
+  hesitationEvents String   // JSON: [{messageId, duration}]
+  decisionSequence String   // JSON: [{action, timestamp, messageId}]
+  actionTimings    String   // JSON: tempo entre ações
+  createdAt        DateTime @default(now())
+}
+
+// Nota do tutor
+model Note {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  content   String
+  timestamp DateTime @default(now())
+}
+
+// Respostas do bystander
+model BystanderAnswer {
+  id         String   @id @default(cuid())
+  sessionId  String
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  answer     String
+  timestamp  DateTime @default(now())
+}
+
+// Perguntas para bystander
+// type: MULTIPLE_CHOICE | SCALE | OPEN_TEXT
+model BystanderQuestion {
+  id       String  @id @default(cuid())
+  question String
+  type     String  // MULTIPLE_CHOICE, SCALE, OPEN_TEXT
+  options  String? // JSON for multiple choice options
+  order    Int
+  isActive Boolean @default(true)
+}
+
+// Admin do sistema
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+}

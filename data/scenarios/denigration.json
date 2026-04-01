@@ -1,0 +1,113 @@
+{
+  "id": "scenario-denigration-001",
+  "name": "Rumores Falsos no Grupo",
+  "description": "Simulação onde participantes espalham informações falsas sobre uma pessoa",
+  "type": "DENIGRATION",
+  "participants": [
+    {
+      "id": "part-1",
+      "name": "Lucas",
+      "avatar": "/avatars/lucas.png",
+      "role": "AGGRESSOR"
+    },
+    {
+      "id": "part-2",
+      "name": "Amanda",
+      "avatar": "/avatars/amanda.png",
+      "role": "VICTIM"
+    },
+    {
+      "id": "part-3",
+      "name": "Rafael",
+      "avatar": "/avatars/rafael.png",
+      "role": "NEUTRAL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "participantId": "part-1",
+      "content": "Vocês ficaram sabendo da Amanda?",
+      "type": "TEXT",
+      "appearDelay": 0,
+      "typingDuration": 1500,
+      "order": 1
+    },
+    {
+      "id": "msg-2",
+      "participantId": "part-3",
+      "content": "O que tem ela?",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 1000,
+      "order": 2
+    },
+    {
+      "id": "msg-3",
+      "participantId": "part-1",
+      "content": "Ouvi dizer que ela foi pega colando na prova",
+      "type": "TEXT",
+      "appearDelay": 1500,
+      "typingDuration": 2000,
+      "order": 3
+    },
+    {
+      "id": "msg-4",
+      "participantId": "part-2",
+      "content": "QUÊ?! Isso é mentira!",
+      "type": "TEXT",
+      "appearDelay": 1000,
+      "typingDuration": 1200,
+      "order": 4
+    },
+    {
+      "id": "msg-5",
+      "participantId": "part-1",
+      "content": "Todo mundo tá comentando. Não adianta negar.",
+      "type": "TEXT",
+      "appearDelay": 800,
+      "typingDuration": 1800,
+      "order": 5
+    },
+    {
+      "id": "msg-6",
+      "participantId": "part-1",
+      "content": "[IMAGEM: Screenshot falso de conversa]",
+      "type": "IMAGE",
+      "appearDelay": 1500,
+      "typingDuration": null,
+      "order": 6,
+      "metadata": {
+        "imageUrl": "/scenarios/fake-screenshot.png",
+        "caption": "Olha a prova"
+      }
+    },
+    {
+      "id": "msg-7",
+      "participantId": "part-2",
+      "content": "Isso é editado! Eu nunca disse isso!",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 2000,
+      "order": 7
+    },
+    {
+      "id": "msg-8",
+      "participantId": "part-1",
+      "content": "Sei sei... uma vez trapaceira, sempre trapaceira",
+      "type": "TEXT",
+      "appearDelay": 1000,
+      "typingDuration": 2000,
+      "order": 8
+    },
+    {
+      "id": "msg-9",
+      "participantId": "part-3",
+      "content": "Lucas, tem certeza disso? Parece meio estranho...",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 9
+    }
+  ]
+}
