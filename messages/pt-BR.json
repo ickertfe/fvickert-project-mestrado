@@ -1,0 +1,182 @@
+{
+  "common": {
+    "appName": "BCRT",
+    "appFullName": "Behavioral Cyberbullying Response Task",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Salvar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "submit": "Enviar",
+    "close": "Fechar",
+    "yes": "Sim",
+    "no": "Não"
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "email": "Email",
+    "sendMagicLink": "Enviar link de acesso",
+    "checkEmail": "Verifique seu email",
+    "magicLinkSent": "Um link de acesso foi enviado para {email}",
+    "invalidEmail": "Email inválido",
+    "unauthorized": "Acesso não autorizado"
+  },
+  "landing": {
+    "title": "Pesquisa sobre Respostas ao Cyberbullying",
+    "subtitle": "Estudo comportamental sobre intervenções em situações de agressão online",
+    "startAsTutor": "Participar como Tutor",
+    "startAsBystander": "Participar como Observador",
+    "adminAccess": "Acesso Administrativo",
+    "learnMore": "Saiba mais"
+  },
+  "disclaimer": {
+    "title": "Termo de Consentimento",
+    "subtitle": "Leia atentamente antes de continuar",
+    "accept": "Li e aceito os termos",
+    "acceptAndContinue": "Aceitar e Continuar",
+    "mustAccept": "Você precisa aceitar os termos para continuar"
+  },
+  "session": {
+    "enterDetails": "Informe seus dados",
+    "name": "Nome",
+    "email": "Email",
+    "namePlaceholder": "Seu nome completo",
+    "emailPlaceholder": "seu@email.com",
+    "selectScenario": "Selecione um cenário",
+    "startSession": "Iniciar Sessão",
+    "sessionEnded": "Sessão Encerrada",
+    "thankYou": "Obrigado pela participação!",
+    "viewSummary": "Ver Resumo"
+  },
+  "chat": {
+    "groupName": "Grupo de Trabalho",
+    "typing": "digitando...",
+    "online": "online",
+    "offline": "offline",
+    "members": "{count} participantes"
+  },
+  "actions": {
+    "title": "Ações Disponíveis",
+    "deleteMessage": "Excluir Mensagem",
+    "warnMessage": "Enviar Aviso",
+    "kickParticipant": "Remover do Grupo",
+    "markDanger": "Marcar como Perigo",
+    "markAttention": "Marcar como Atenção",
+    "addNote": "Adicionar Nota",
+    "undo": "Desfazer Última Ação",
+    "confirmDelete": "Tem certeza que deseja excluir esta mensagem?",
+    "confirmKick": "Tem certeza que deseja remover {name} do grupo?",
+    "confirmWarn": "Tem certeza que deseja enviar um aviso sobre esta mensagem?",
+    "actionApplied": "Ação aplicada com sucesso",
+    "actionUndone": "Ação desfeita"
+  },
+  "notes": {
+    "title": "Suas Notas",
+    "addNote": "Adicionar Nota",
+    "notePlaceholder": "Digite sua observação...",
+    "noNotes": "Nenhuma nota adicionada"
+  },
+  "questionnaire": {
+    "title": "Questionário Final",
+    "question1": "Em uma escala de 1 a 5, o quanto você considera que as mensagens observadas representam uma situação de cyberbullying?",
+    "question2": "Como você se sentiu ao observar esta conversa?",
+    "question3": "Se você estivesse participando desta conversa na vida real, o que você faria?",
+    "question4": "Na sua opinião, qual deveria ser a consequência para o comportamento observado?",
+    "scale": {
+      "1": "Nada",
+      "2": "Pouco",
+      "3": "Moderadamente",
+      "4": "Muito",
+      "5": "Extremamente"
+    },
+    "feelings": {
+      "uncomfortable": "Desconfortável",
+      "angry": "Com raiva",
+      "sad": "Triste",
+      "indifferent": "Indiferente",
+      "anxious": "Ansioso",
+      "other": "Outro"
+    },
+    "hypotheticalActions": {
+      "defend": "Defenderia a vítima",
+      "report": "Denunciaria ao administrador",
+      "leave": "Sairia do grupo",
+      "ignore": "Ignoraria",
+      "confront": "Confrontaria o agressor",
+      "other": "Outro"
+    },
+    "otherPlaceholder": "Descreva...",
+    "submit": "Enviar Respostas"
+  },
+  "admin": {
+    "dashboard": "Painel Administrativo",
+    "scenarios": "Cenários",
+    "sessions": "Sessões",
+    "reports": "Relatórios",
+    "settings": "Configurações",
+    "createScenario": "Novo Cenário",
+    "editScenario": "Editar Cenário",
+    "scenarioName": "Nome do Cenário",
+    "scenarioDescription": "Descrição",
+    "scenarioType": "Tipo",
+    "scenarioActive": "Ativo",
+    "messages": "Mensagens",
+    "addMessage": "Adicionar Mensagem",
+    "editMessage": "Editar Mensagem",
+    "messageContent": "Conteúdo",
+    "messageType": "Tipo",
+    "messageDelay": "Delay (ms)",
+    "typingDuration": "Duração do 'digitando' (ms)",
+    "participants": "Participantes",
+    "addParticipant": "Adicionar Participante",
+    "participantName": "Nome",
+    "participantRole": "Papel",
+    "exportCSV": "Exportar CSV",
+    "exportPDF": "Exportar PDF",
+    "totalSessions": "Total de Sessões",
+    "completedSessions": "Sessões Completas",
+    "averageDuration": "Duração Média",
+    "noData": "Nenhum dado disponível"
+  },
+  "scenarios": {
+    "flaming": "Flaming",
+    "flamingDescription": "Discussão acalorada com ataques hostis",
+    "socialExclusion": "Exclusão Social",
+    "socialExclusionDescription": "Exclusão deliberada de participante",
+    "denigration": "Difamação",
+    "denigrationDescription": "Espalhamento de informações falsas"
+  },
+  "roles": {
+    "tutor": "Tutor",
+    "tutorDescription": "Pode executar ações de moderação",
+    "bystander": "Observador",
+    "bystanderDescription": "Apenas observa a simulação",
+    "aggressor": "Agressor",
+    "victim": "Vítima",
+    "neutral": "Neutro"
+  },
+  "metrics": {
+    "title": "Métricas da Sessão",
+    "totalDuration": "Duração Total",
+    "firstActionTime": "Tempo até Primeira Ação",
+    "totalActions": "Total de Ações",
+    "totalUndos": "Total de Desfazer",
+    "hesitationEvents": "Eventos de Hesitação",
+    "decisionSequence": "Sequência de Decisões"
+  },
+  "errors": {
+    "generic": "Algo deu errado. Tente novamente.",
+    "sessionNotFound": "Sessão não encontrada",
+    "scenarioNotFound": "Cenário não encontrado",
+    "unauthorized": "Você não tem permissão para acessar este recurso",
+    "invalidData": "Dados inválidos",
+    "networkError": "Erro de conexão. Verifique sua internet."
+  }
+}

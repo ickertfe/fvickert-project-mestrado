@@ -1,0 +1,182 @@
+{
+  "common": {
+    "appName": "BCRT",
+    "appFullName": "Behavioral Cyberbullying Response Task",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "sendMagicLink": "Send magic link",
+    "checkEmail": "Check your email",
+    "magicLinkSent": "A magic link has been sent to {email}",
+    "invalidEmail": "Invalid email",
+    "unauthorized": "Unauthorized access"
+  },
+  "landing": {
+    "title": "Research on Cyberbullying Responses",
+    "subtitle": "Behavioral study on interventions in online aggression situations",
+    "startAsTutor": "Participate as Tutor",
+    "startAsBystander": "Participate as Observer",
+    "adminAccess": "Admin Access",
+    "learnMore": "Learn more"
+  },
+  "disclaimer": {
+    "title": "Consent Form",
+    "subtitle": "Please read carefully before continuing",
+    "accept": "I have read and accept the terms",
+    "acceptAndContinue": "Accept and Continue",
+    "mustAccept": "You must accept the terms to continue"
+  },
+  "session": {
+    "enterDetails": "Enter your details",
+    "name": "Name",
+    "email": "Email",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "your@email.com",
+    "selectScenario": "Select a scenario",
+    "startSession": "Start Session",
+    "sessionEnded": "Session Ended",
+    "thankYou": "Thank you for participating!",
+    "viewSummary": "View Summary"
+  },
+  "chat": {
+    "groupName": "Work Group",
+    "typing": "typing...",
+    "online": "online",
+    "offline": "offline",
+    "members": "{count} members"
+  },
+  "actions": {
+    "title": "Available Actions",
+    "deleteMessage": "Delete Message",
+    "warnMessage": "Send Warning",
+    "kickParticipant": "Remove from Group",
+    "markDanger": "Mark as Danger",
+    "markAttention": "Mark for Attention",
+    "addNote": "Add Note",
+    "undo": "Undo Last Action",
+    "confirmDelete": "Are you sure you want to delete this message?",
+    "confirmKick": "Are you sure you want to remove {name} from the group?",
+    "confirmWarn": "Are you sure you want to send a warning about this message?",
+    "actionApplied": "Action applied successfully",
+    "actionUndone": "Action undone"
+  },
+  "notes": {
+    "title": "Your Notes",
+    "addNote": "Add Note",
+    "notePlaceholder": "Type your observation...",
+    "noNotes": "No notes added"
+  },
+  "questionnaire": {
+    "title": "Final Questionnaire",
+    "question1": "On a scale of 1 to 5, how much do you consider the observed messages represent a cyberbullying situation?",
+    "question2": "How did you feel while observing this conversation?",
+    "question3": "If you were participating in this conversation in real life, what would you do?",
+    "question4": "In your opinion, what should be the consequence for the observed behavior?",
+    "scale": {
+      "1": "Not at all",
+      "2": "A little",
+      "3": "Moderately",
+      "4": "Very much",
+      "5": "Extremely"
+    },
+    "feelings": {
+      "uncomfortable": "Uncomfortable",
+      "angry": "Angry",
+      "sad": "Sad",
+      "indifferent": "Indifferent",
+      "anxious": "Anxious",
+      "other": "Other"
+    },
+    "hypotheticalActions": {
+      "defend": "Would defend the victim",
+      "report": "Would report to admin",
+      "leave": "Would leave the group",
+      "ignore": "Would ignore",
+      "confront": "Would confront the aggressor",
+      "other": "Other"
+    },
+    "otherPlaceholder": "Describe...",
+    "submit": "Submit Answers"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "scenarios": "Scenarios",
+    "sessions": "Sessions",
+    "reports": "Reports",
+    "settings": "Settings",
+    "createScenario": "New Scenario",
+    "editScenario": "Edit Scenario",
+    "scenarioName": "Scenario Name",
+    "scenarioDescription": "Description",
+    "scenarioType": "Type",
+    "scenarioActive": "Active",
+    "messages": "Messages",
+    "addMessage": "Add Message",
+    "editMessage": "Edit Message",
+    "messageContent": "Content",
+    "messageType": "Type",
+    "messageDelay": "Delay (ms)",
+    "typingDuration": "Typing duration (ms)",
+    "participants": "Participants",
+    "addParticipant": "Add Participant",
+    "participantName": "Name",
+    "participantRole": "Role",
+    "exportCSV": "Export CSV",
+    "exportPDF": "Export PDF",
+    "totalSessions": "Total Sessions",
+    "completedSessions": "Completed Sessions",
+    "averageDuration": "Average Duration",
+    "noData": "No data available"
+  },
+  "scenarios": {
+    "flaming": "Flaming",
+    "flamingDescription": "Heated discussion with hostile attacks",
+    "socialExclusion": "Social Exclusion",
+    "socialExclusionDescription": "Deliberate exclusion of participant",
+    "denigration": "Denigration",
+    "denigrationDescription": "Spreading false information"
+  },
+  "roles": {
+    "tutor": "Tutor",
+    "tutorDescription": "Can execute moderation actions",
+    "bystander": "Bystander",
+    "bystanderDescription": "Only observes the simulation",
+    "aggressor": "Aggressor",
+    "victim": "Victim",
+    "neutral": "Neutral"
+  },
+  "metrics": {
+    "title": "Session Metrics",
+    "totalDuration": "Total Duration",
+    "firstActionTime": "Time to First Action",
+    "totalActions": "Total Actions",
+    "totalUndos": "Total Undos",
+    "hesitationEvents": "Hesitation Events",
+    "decisionSequence": "Decision Sequence"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "sessionNotFound": "Session not found",
+    "scenarioNotFound": "Scenario not found",
+    "unauthorized": "You don't have permission to access this resource",
+    "invalidData": "Invalid data",
+    "networkError": "Connection error. Check your internet."
+  }
+}
