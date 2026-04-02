@@ -3,10 +3,6 @@
 import {
   TrashIcon,
   ExclamationTriangleIcon,
-  ShieldExclamationIcon,
-  FlagIcon,
-  PencilIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline';
 import type { ActionType } from '@/types/action';
 import { cn } from '@/lib/utils';
@@ -39,75 +35,6 @@ export function MessageActions({
         className
       )}
     >
-      {/* MARK_DANGER — toggle */}
-      {!isApplied('MARK_DANGER') ? (
-        <ActionBtn
-          icon={ShieldExclamationIcon}
-          label="Perigo"
-          color="text-action-danger"
-          hoverColor="hover:bg-red-50"
-          disabled={isDeleted}
-          onClick={() => onAction?.(messageId, 'MARK_DANGER')}
-          onMouseEnter={() => onHoverStart?.(messageId, 'MARK_DANGER')}
-          onMouseLeave={onHoverEnd}
-        />
-      ) : (
-        <ActionBtn
-          icon={XMarkIcon}
-          label="Rem. Perigo"
-          color="text-action-danger"
-          hoverColor="hover:bg-red-50"
-          active
-          onClick={() => onAction?.(messageId, 'MARK_DANGER')}
-        />
-      )}
-
-      {/* MARK_ATTENTION — toggle */}
-      {!isApplied('MARK_ATTENTION') ? (
-        <ActionBtn
-          icon={FlagIcon}
-          label="Atenção"
-          color="text-action-warning"
-          hoverColor="hover:bg-amber-50"
-          disabled={isDeleted}
-          onClick={() => onAction?.(messageId, 'MARK_ATTENTION')}
-          onMouseEnter={() => onHoverStart?.(messageId, 'MARK_ATTENTION')}
-          onMouseLeave={onHoverEnd}
-        />
-      ) : (
-        <ActionBtn
-          icon={XMarkIcon}
-          label="Rem. Atenção"
-          color="text-action-warning"
-          hoverColor="hover:bg-amber-50"
-          active
-          onClick={() => onAction?.(messageId, 'MARK_ATTENTION')}
-        />
-      )}
-
-      {/* ADD_NOTE — toggle */}
-      {!isApplied('ADD_NOTE') ? (
-        <ActionBtn
-          icon={PencilIcon}
-          label="Nota"
-          color="text-action-info"
-          hoverColor="hover:bg-blue-50"
-          disabled={isDeleted}
-          onClick={() => onAction?.(messageId, 'ADD_NOTE')}
-          onMouseEnter={() => onHoverStart?.(messageId, 'ADD_NOTE')}
-          onMouseLeave={onHoverEnd}
-        />
-      ) : (
-        <ActionBtn
-          icon={XMarkIcon}
-          label="Rem. Nota"
-          color="text-action-info"
-          hoverColor="hover:bg-blue-50"
-          active
-          onClick={() => onAction?.(messageId, 'ADD_NOTE')}
-        />
-      )}
-
       {/* DELETE_MESSAGE — irreversível (use undo) */}
       <ActionBtn
         icon={TrashIcon}

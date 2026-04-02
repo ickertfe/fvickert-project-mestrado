@@ -7,19 +7,19 @@
   "type": "FLAMING",
   "participants": [
     {
-      "id": "part-1",
+      "id": "flaming-part-1",
       "name": "Carlos",
       "avatar": "/avatars/carlos.png",
       "role": "AGGRESSOR"
     },
     {
-      "id": "part-2",
+      "id": "flaming-part-2",
       "name": "Marina",
       "avatar": "/avatars/marina.png",
       "role": "VICTIM"
     },
     {
-      "id": "part-3",
+      "id": "flaming-part-3",
       "name": "Pedro",
       "avatar": "/avatars/pedro.png",
       "role": "NEUTRAL"
@@ -27,8 +27,8 @@
   ],
   "messages": [
     {
-      "id": "msg-1",
-      "participantId": "part-2",
+      "id": "flaming-msg-1",
+      "participantId": "flaming-part-2",
       "content": "Pessoal, terminei a minha parte do relatório. Podem revisar?",
       "type": "TEXT",
       "appearDelay": 0,
@@ -36,8 +36,8 @@
       "order": 1
     },
     {
-      "id": "msg-2",
-      "participantId": "part-1",
+      "id": "flaming-msg-2",
+      "participantId": "flaming-part-1",
       "content": "Já vi. Tá bem fraco, sinceramente.",
       "type": "TEXT",
       "appearDelay": 3000,
@@ -45,8 +45,8 @@
       "order": 2
     },
     {
-      "id": "msg-3",
-      "participantId": "part-2",
+      "id": "flaming-msg-3",
+      "participantId": "flaming-part-2",
       "content": "Pode me dizer o que posso melhorar?",
       "type": "TEXT",
       "appearDelay": 2000,
@@ -54,8 +54,8 @@
       "order": 3
     },
     {
-      "id": "msg-4",
-      "participantId": "part-1",
+      "id": "flaming-msg-4",
+      "participantId": "flaming-part-1",
       "content": "Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.",
       "type": "TEXT",
       "appearDelay": 1000,
@@ -63,8 +63,8 @@
       "order": 4
     },
     {
-      "id": "msg-5",
-      "participantId": "part-3",
+      "id": "flaming-msg-5",
+      "participantId": "flaming-part-3",
       "content": "Calma, Carlos...",
       "type": "TEXT",
       "appearDelay": 1500,
@@ -72,8 +72,8 @@
       "order": 5
     },
     {
-      "id": "msg-6",
-      "participantId": "part-1",
+      "id": "flaming-msg-6",
+      "participantId": "flaming-part-1",
       "content": "Cala a boca, Pedro. Ninguém pediu sua opinião.",
       "type": "TEXT",
       "appearDelay": 500,
@@ -81,8 +81,8 @@
       "order": 6
     },
     {
-      "id": "msg-7",
-      "participantId": "part-1",
+      "id": "flaming-msg-7",
+      "participantId": "flaming-part-1",
       "content": "Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.",
       "type": "TEXT",
       "appearDelay": 800,
@@ -90,8 +90,8 @@
       "order": 7
     },
     {
-      "id": "msg-8",
-      "participantId": "part-2",
+      "id": "flaming-msg-8",
+      "participantId": "flaming-part-2",
       "content": "😢",
       "type": "EMOJI",
       "appearDelay": 2000,
@@ -99,13 +99,31 @@
       "order": 8
     },
     {
-      "id": "msg-9",
-      "participantId": "part-1",
+      "id": "flaming-msg-9",
+      "participantId": "flaming-part-1",
       "content": "Vai chorar agora? Que patético!",
       "type": "TEXT",
       "appearDelay": 1000,
       "typingDuration": 1500,
       "order": 9
+    },
+    {
+      "id": "flaming-msg-10",
+      "participantId": "flaming-part-3",
+      "content": "Carlos, isso tá passando dos limites. Você não pode falar assim com ela.",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 2200,
+      "order": 10
+    },
+    {
+      "id": "flaming-msg-11",
+      "participantId": "flaming-part-1",
+      "content": "Que limite? Eu só tô sendo honesto. Se não aguentam crítica, não mandem trabalho de qualidade duvidosa.",
+      "type": "TEXT",
+      "appearDelay": 800,
+      "typingDuration": 2500,
+      "order": 11
     }
   ]
 }

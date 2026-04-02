@@ -14,6 +14,7 @@ const createMetricsSchema = z.object({
     duration: z.number(),
     timestamp: z.number(),
     actionType: z.string().optional(),
+    isFixation: z.boolean().optional(),
   })),
   decisionSequence: z.array(z.object({
     action: z.string(),

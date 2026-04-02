@@ -5,12 +5,15 @@ import { Badge } from '@/components/ui/Badge';
 import { prisma } from '@/lib/db';
 import { ConfigToggle } from './_components/ConfigToggle';
 import { CloseSessionButton } from './_components/CloseSessionButton';
+import { CloseAllSessionsButton } from './_components/CloseAllSessionsButton';
+import { ResetDatabaseButton } from './_components/ResetDatabaseButton';
 
 async function getAdminData() {
-  const [totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config] =
+  const [totalSessions, completedSessions, openSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config] =
     await Promise.all([
       prisma.session.count(),
       prisma.session.count({ where: { completedAt: { not: null } } }),
+      prisma.session.count({ where: { completedAt: null } }),
       prisma.session.count({ where: { role: 'TUTOR' } }),
       prisma.session.count({ where: { role: 'BYSTANDER' } }),
       prisma.scenario.findMany({
@@ -29,11 +32,11 @@ async function getAdminData() {
       }),
     ]);
 
-  return { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config };
+  return { totalSessions, completedSessions, openSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config };
 }
 
 export default async function AdminDashboard() {
-  const { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config } =
+  const { totalSessions, completedSessions, openSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config } =
     await getAdminData();
 
   return (
@@ -197,9 +200,13 @@ export default async function AdminDashboard() {
             title="Sessões Recentes"
             description="Últimas participações registradas"
             action={
-              <Button size="sm" variant="outline">
-                Exportar CSV
-              </Button>
+              <div className="flex gap-2">
+                <CloseAllSessionsButton openCount={openSessions} />
+                <ResetDatabaseButton />
+                <Button size="sm" variant="outline">
+                  Exportar CSV
+                </Button>
+              </div>
             }
           />
           <CardContent>
@@ -254,9 +261,14 @@ export default async function AdminDashboard() {
                           })}
                         </td>
                         <td className="px-4 py-4">
-                          {!session.completedAt && (
-                            <CloseSessionButton sessionId={session.id} />
-                          )}
+                          <div className="flex gap-2 items-center">
+                            <Link href={`/admin/sessions/${session.id}`}>
+                              <Button size="sm" variant="ghost">Ver Detalhes</Button>
+                            </Link>
+                            {!session.completedAt && (
+                              <CloseSessionButton sessionId={session.id} />
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}

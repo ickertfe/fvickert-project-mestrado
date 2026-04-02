@@ -38,8 +38,8 @@ export function formatTimeMMSS(ms: number): string {
 /**
  * Format timestamp to localized time string
  */
-export function formatTimestamp(date: Date, locale: string = 'pt-BR'): string {
-  return date.toLocaleTimeString(locale, {
+export function formatTimestamp(date: Date | string, locale: string = 'pt-BR'): string {
+  return new Date(date).toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -48,8 +48,8 @@ export function formatTimestamp(date: Date, locale: string = 'pt-BR'): string {
 /**
  * Format date to localized date string
  */
-export function formatDate(date: Date, locale: string = 'pt-BR'): string {
-  return date.toLocaleDateString(locale, {
+export function formatDate(date: Date | string, locale: string = 'pt-BR'): string {
+  return new Date(date).toLocaleDateString(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -59,16 +59,16 @@ export function formatDate(date: Date, locale: string = 'pt-BR'): string {
 /**
  * Format date and time
  */
-export function formatDateTime(date: Date, locale: string = 'pt-BR'): string {
+export function formatDateTime(date: Date | string, locale: string = 'pt-BR'): string {
   return `${formatDate(date, locale)} ${formatTimestamp(date, locale)}`;
 }
 
 /**
  * Get relative time string (e.g., "2 minutes ago")
  */
-export function getRelativeTime(date: Date, locale: string = 'pt-BR'): string {
+export function getRelativeTime(date: Date | string, locale: string = 'pt-BR'): string {
   const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
+  const diffMs = now.getTime() - new Date(date).getTime();
   const diffSeconds = Math.floor(diffMs / 1000);
   const diffMinutes = Math.floor(diffSeconds / 60);
   const diffHours = Math.floor(diffMinutes / 60);

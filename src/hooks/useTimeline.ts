@@ -28,6 +28,15 @@ export function useTimeline(messages: Message[], options: UseTimelineOptions = {
   const [state, setState] = useState<TimelineState>(() => initializeTimeline(messages));
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isRunningRef = useRef(false);
+  const initializedRef = useRef(messages.length > 0);
+
+  // Re-initialize when messages arrive after async data load (empty → non-empty)
+  useEffect(() => {
+    if (messages.length > 0 && !initializedRef.current) {
+      initializedRef.current = true;
+      setState(initializeTimeline(messages));
+    }
+  }, [messages]);
 
   const clearTimeouts = useCallback(() => {
     if (timeoutRef.current) {

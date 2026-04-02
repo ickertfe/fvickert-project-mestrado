@@ -18,6 +18,7 @@ export interface HesitationEvent {
   duration: number; // ms
   timestamp: number; // Unix timestamp
   actionType?: ActionType;
+  isFixation?: boolean; // true when hover > 1500ms (sustained focus on message)
 }
 
 export interface DecisionEvent {

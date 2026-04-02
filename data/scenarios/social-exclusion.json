@@ -7,19 +7,19 @@
   "type": "SOCIAL_EXCLUSION",
   "participants": [
     {
-      "id": "part-1",
+      "id": "exclusion-part-1",
       "name": "Julia",
       "avatar": "/avatars/julia.png",
       "role": "AGGRESSOR"
     },
     {
-      "id": "part-2",
+      "id": "exclusion-part-2",
       "name": "Fernanda",
       "avatar": "/avatars/fernanda.png",
       "role": "VICTIM"
     },
     {
-      "id": "part-3",
+      "id": "exclusion-part-3",
       "name": "Beatriz",
       "avatar": "/avatars/beatriz.png",
       "role": "AGGRESSOR"
@@ -27,8 +27,8 @@
   ],
   "messages": [
     {
-      "id": "msg-1",
-      "participantId": "part-1",
+      "id": "exclusion-msg-1",
+      "participantId": "exclusion-part-1",
       "content": "Gente, vamos combinar a festa de aniversário da Bia?",
       "type": "TEXT",
       "appearDelay": 0,
@@ -36,8 +36,8 @@
       "order": 1
     },
     {
-      "id": "msg-2",
-      "participantId": "part-2",
+      "id": "exclusion-msg-2",
+      "participantId": "exclusion-part-2",
       "content": "Oba! Posso ajudar a organizar!",
       "type": "TEXT",
       "appearDelay": 2000,
@@ -45,8 +45,8 @@
       "order": 2
     },
     {
-      "id": "msg-3",
-      "participantId": "part-3",
+      "id": "exclusion-msg-3",
+      "participantId": "exclusion-part-3",
       "content": "Julia, vamos conversar no outro grupo",
       "type": "TEXT",
       "appearDelay": 1500,
@@ -54,8 +54,8 @@
       "order": 3
     },
     {
-      "id": "msg-4",
-      "participantId": "part-1",
+      "id": "exclusion-msg-4",
+      "participantId": "exclusion-part-1",
       "content": "Boa ideia 👍",
       "type": "TEXT",
       "appearDelay": 1000,
@@ -63,8 +63,8 @@
       "order": 4
     },
     {
-      "id": "msg-5",
-      "participantId": "part-2",
+      "id": "exclusion-msg-5",
+      "participantId": "exclusion-part-2",
       "content": "Que outro grupo? Posso entrar?",
       "type": "TEXT",
       "appearDelay": 2500,
@@ -72,8 +72,8 @@
       "order": 5
     },
     {
-      "id": "msg-6",
-      "participantId": "part-1",
+      "id": "exclusion-msg-6",
+      "participantId": "exclusion-part-1",
       "content": "É um grupo só nosso, Fernanda",
       "type": "TEXT",
       "appearDelay": 3000,
@@ -81,8 +81,8 @@
       "order": 6
     },
     {
-      "id": "msg-7",
-      "participantId": "part-3",
+      "id": "exclusion-msg-7",
+      "participantId": "exclusion-part-3",
       "content": "É, não é pra todo mundo não",
       "type": "TEXT",
       "appearDelay": 1000,
@@ -90,8 +90,8 @@
       "order": 7
     },
     {
-      "id": "msg-8",
-      "participantId": "part-2",
+      "id": "exclusion-msg-8",
+      "participantId": "exclusion-part-2",
       "content": "Mas eu pensei que éramos amigas...",
       "type": "TEXT",
       "appearDelay": 4000,
@@ -99,13 +99,40 @@
       "order": 8
     },
     {
-      "id": "msg-9",
-      "participantId": "part-1",
+      "id": "exclusion-msg-9",
+      "participantId": "exclusion-part-1",
       "content": "🙄",
       "type": "EMOJI",
       "appearDelay": 1500,
       "typingDuration": null,
       "order": 9
+    },
+    {
+      "id": "exclusion-msg-10",
+      "participantId": "exclusion-part-2",
+      "content": "Tá bem... só achei estranho, a gente sempre fez tudo junto.",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 10
+    },
+    {
+      "id": "exclusion-msg-11",
+      "participantId": "exclusion-part-3",
+      "content": "Para de drama, Fernanda. Não é nada demais.",
+      "type": "TEXT",
+      "appearDelay": 1500,
+      "typingDuration": 1500,
+      "order": 11
+    },
+    {
+      "id": "exclusion-msg-12",
+      "participantId": "exclusion-part-1",
+      "content": "Bia, confirmei o bolo! 🎂 Vai ser incrível",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 1800,
+      "order": 12
     }
   ]
 }

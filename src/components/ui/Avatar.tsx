@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { cn, getInitials, getAvatarColor } from '@/lib/utils';
 
@@ -47,21 +48,20 @@ export function Avatar({
 }: AvatarProps) {
   const initials = getInitials(name);
   const bgColor = getAvatarColor(name);
+  const [imgError, setImgError] = useState(false);
+
+  const showImage = src && !imgError;
 
   return (
     <div className={cn('relative flex-shrink-0 rounded-full', wrapperSizeClasses[size], className)}>
-      {src ? (
-        <div
-          className={cn(
-            'relative overflow-hidden rounded-full',
-            sizeClasses[size]
-          )}
-        >
+      {showImage ? (
+        <div className={cn('relative overflow-hidden rounded-full', sizeClasses[size])}>
           <Image
             src={src}
             alt={name}
             fill
             className="object-cover"
+            onError={() => setImgError(true)}
           />
         </div>
       ) : (

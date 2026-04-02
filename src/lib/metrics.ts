@@ -10,7 +10,8 @@ import type {
 import type { ActionType } from '@/types/action';
 import type { Session } from '@/types/session';
 
-const HESITATION_THRESHOLD = 500; // ms - minimum hover time to count as hesitation
+const HESITATION_THRESHOLD = 500;  // ms - minimum hover time to count as hesitation
+const FIXATION_THRESHOLD   = 1500; // ms - sustained focus on a message
 
 export function createMetricsTracker(sessionId: string): MetricsTracker {
   return {
@@ -50,6 +51,7 @@ export function endHover(tracker: MetricsTracker): MetricsTracker {
       duration,
       timestamp: tracker.currentHover.startTime,
       actionType: tracker.currentHover.actionType,
+      isFixation: duration >= FIXATION_THRESHOLD,
     };
 
     return {

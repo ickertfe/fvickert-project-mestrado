@@ -15,9 +15,6 @@ interface ChatHeaderProps {
 }
 
 const ACTION_LEGEND = [
-  { color: 'bg-red-500', label: 'Perigo', desc: 'Marca a mensagem como conteúdo de alto risco de bullying' },
-  { color: 'bg-amber-500', label: 'Atenção', desc: 'Sinaliza a mensagem para revisão posterior' },
-  { color: 'bg-blue-500', label: 'Nota', desc: 'Adiciona uma anotação pessoal à mensagem' },
   { color: 'bg-red-700', label: 'Excluir', desc: 'Remove a mensagem do chat por conter bullying' },
   { color: 'bg-amber-600', label: 'Aviso', desc: 'Envia um aviso público ao remetente da mensagem' },
   { color: 'bg-gray-500', label: 'Desfazer', desc: 'Reverte a última ação realizada' },

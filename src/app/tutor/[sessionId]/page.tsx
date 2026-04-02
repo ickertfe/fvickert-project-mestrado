@@ -7,66 +7,55 @@ import { ActionPanel, NotesPanel } from '@/components/tutor';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useChat } from '@/hooks/useChat';
-import type { Session } from '@/types/session';
 import type { Message } from '@/types/message';
 import type { ChatParticipant } from '@/types/scenario';
 
-const mockSession: Session = {
-  id: 'session-1',
-  participantName: 'Participante',
-  participantEmail: 'participante@email.com',
-  role: 'TUTOR',
-  scenarioId: 'scenario-flaming-001',
-  disclaimerAccepted: true,
-  disclaimerAcceptedAt: new Date(),
-  startedAt: null,
-  completedAt: null,
-  createdAt: new Date(),
-};
-
-const mockParticipants: ChatParticipant[] = [
-  { id: 'part-1', name: 'Carlos', role: 'AGGRESSOR' },
-  { id: 'part-2', name: 'Marina', role: 'VICTIM' },
-  { id: 'part-3', name: 'Pedro', role: 'NEUTRAL' },
-];
-
-const mockMessages: Message[] = [
-  { id: 'msg-1', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: 'Pessoal, terminei a minha parte do relatório. Podem revisar?', type: 'TEXT', appearDelay: 0, typingDuration: 2000, order: 1 },
-  { id: 'msg-2', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Já vi. Tá bem fraco, sinceramente.', type: 'TEXT', appearDelay: 3000, typingDuration: 1500, order: 2 },
-  { id: 'msg-3', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: 'Pode me dizer o que posso melhorar?', type: 'TEXT', appearDelay: 2000, typingDuration: 1800, order: 3 },
-  { id: 'msg-4', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.', type: 'TEXT', appearDelay: 1000, typingDuration: 2500, order: 4 },
-  { id: 'msg-5', scenarioId: 'scenario-flaming-001', participantId: 'part-3', content: 'Calma, Carlos...', type: 'TEXT', appearDelay: 1500, typingDuration: 1000, order: 5 },
-  { id: 'msg-6', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Cala a boca, Pedro. Ninguém pediu sua opinião.', type: 'TEXT', appearDelay: 500, typingDuration: 1200, order: 6 },
-  { id: 'msg-7', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.', type: 'TEXT', appearDelay: 800, typingDuration: 2000, order: 7 },
-  { id: 'msg-8', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: '😢', type: 'EMOJI', appearDelay: 2000, typingDuration: null, order: 8 },
-  { id: 'msg-9', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Vai chorar agora? Que patético!', type: 'TEXT', appearDelay: 1000, typingDuration: 1500, order: 9 },
-];
+interface SessionData {
+  id: string;
+  participantName: string;
+  scenario: {
+    id: string;
+    name: string;
+    softName: string | null;
+    messages: Message[];
+    participants: ChatParticipant[];
+  };
+}
 
 export default function TutorSessionPage() {
   const params = useParams();
   const router = useRouter();
   const sessionId = params.sessionId as string;
 
-  const [session] = useState<Session>(mockSession);
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [notes, setNotes] = useState<Array<{ id: string; sessionId: string; content: string; timestamp: Date }>>([]);
   const [hasStarted, setHasStarted] = useState(false);
   const [showExit, setShowExit] = useState(false);
-  const [showRole, setShowRole] = useState(true);
+  const [showRole, setShowRole] = useState(false);
+  const [showScenarioType, setShowScenarioType] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
-    fetch('/api/config')
-      .then((r) => r.json())
-      .then((cfg) => setShowRole(cfg.showRoleToParticipants ?? true));
-  }, []);
+    Promise.all([
+      fetch(`/api/sessions/${sessionId}`).then((r) => {
+        if (!r.ok) throw new Error('Session not found');
+        return r.json();
+      }),
+      fetch('/api/config').then((r) => r.json()),
+    ])
+      .then(([data, cfg]) => {
+        setSessionData(data);
+        setShowRole(cfg.showRoleToParticipants ?? false);
+        setShowScenarioType(cfg.showScenarioType ?? false);
+      })
+      .catch(() => setLoadError(true));
+  }, [sessionId]);
 
   const chat = useChat({
     sessionId,
-    messages: mockMessages,
-    participants: mockParticipants,
+    messages: sessionData?.scenario.messages ?? [],
+    participants: sessionData?.scenario.participants ?? [],
     role: 'TUTOR',
-    onComplete: () => {
-      // Session naturally finished — handled via banner in sidebar
-    },
   });
 
   const handleStart = () => {
@@ -79,10 +68,41 @@ export default function TutorSessionPage() {
     setNotes((prev) => [...prev, newNote]);
   };
 
-  const handleFinalize = () => {
-    chat.finalizeChat();
+  const handleFinalize = async () => {
+    const metricsData = chat.finalizeChat();
+    try {
+      await fetch('/api/metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...metricsData, sessionId }),
+      });
+    } catch { /* session still shows exit even if metrics fail */ }
     setShowExit(true);
   };
+
+  // ── Loading ───────────────────────────────────────────────────────────────
+  if (!sessionData && !loadError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-chat-header border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <Card className="max-w-sm text-center p-8">
+          <p className="text-gray-600">Sessão não encontrada.</p>
+          <Button onClick={() => router.push('/')} className="mt-4">Voltar ao início</Button>
+        </Card>
+      </div>
+    );
+  }
+
+  const groupName = showScenarioType
+    ? sessionData!.scenario.name
+    : (sessionData!.scenario.softName ?? sessionData!.scenario.name);
 
   // ── Exit / Thank-you screen ──────────────────────────────────────────────
   if (showExit) {
@@ -95,12 +115,10 @@ export default function TutorSessionPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-
             <h1 className="text-2xl font-bold text-gray-900">Obrigado por participar!</h1>
             <p className="mt-2 text-gray-600">
               Sua participação como <strong>Tutor</strong> foi registrada com sucesso.
             </p>
-
             <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 p-4 text-left space-y-3">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Identificador da sessão</p>
@@ -112,7 +130,6 @@ export default function TutorSessionPage() {
                 </p>
               </div>
             </div>
-
             <Button onClick={() => router.push('/')} className="mt-6 w-full">
               Voltar ao início
             </Button>
@@ -156,8 +173,8 @@ export default function TutorSessionPage() {
         <ChatContainer
           header={
             <ChatHeader
-              groupName="Grupo de Trabalho"
-              participants={mockParticipants}
+              groupName={groupName}
+              participants={sessionData!.scenario.participants}
               typingParticipant={chat.typingParticipant}
               showLegend
             />
@@ -182,7 +199,6 @@ export default function TutorSessionPage() {
           })}
           {chat.typingParticipant && <TypingIndicator participant={chat.typingParticipant} />}
 
-          {/* Session-ended banner inside the chat */}
           {chat.isComplete && (
             <div className="mx-4 my-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-center">
               <p className="text-sm font-medium text-green-800">A conversa chegou ao fim.</p>
@@ -193,23 +209,27 @@ export default function TutorSessionPage() {
       </div>
 
       {/* Sidebar */}
-      <div className="w-80 flex-shrink-0 space-y-4 overflow-y-auto border-l border-gray-200 bg-white p-4">
-        <ActionPanel
-          canUndo={chat.canUndo}
-          onUndo={chat.undoLastAction}
-          stats={chat.stats}
-          isLoading={chat.isLoading}
-        />
+      <div className="w-80 flex-shrink-0 flex flex-col border-l border-gray-200 bg-white">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <ActionPanel
+            canUndo={chat.canUndo}
+            onUndo={chat.undoLastAction}
+            stats={chat.stats}
+            isLoading={chat.isLoading}
+          />
+          <NotesPanel notes={notes} onAddNote={handleAddNote} />
+        </div>
 
-        <NotesPanel notes={notes} onAddNote={handleAddNote} />
-
-        <Button
-          variant="destructive"
-          className="w-full"
-          onClick={handleFinalize}
-        >
-          Finalizar Sessão
-        </Button>
+        <div className="flex-shrink-0 border-t border-gray-100 p-4">
+          <button
+            type="button"
+            onClick={handleFinalize}
+            disabled={!chat.isComplete}
+            className="w-full rounded-md px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
+          >
+            {chat.isComplete ? 'Finalizar Sessão' : 'Aguardando fim da conversa…'}
+          </button>
+        </div>
       </div>
     </div>
   );
