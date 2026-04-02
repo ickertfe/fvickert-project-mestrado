@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { TutorAggregateChart, TutorDurationChart, BystanderDurationChart, BystanderQuestionnaireCharts } from './ReportCharts';
 
 interface ReportPageProps {
   params: { id: string };
@@ -14,7 +15,12 @@ export default async function ScenarioReportPage({ params }: ReportPageProps) {
     where: { id: params.id },
     include: {
       sessions: {
-        include: { _count: { select: { actions: true } } },
+        include: {
+          _count: { select: { actions: true } },
+          metrics: true,
+          actions: { where: { undone: false } },
+          bystanderAnswers: true,
+        },
         orderBy: { createdAt: 'desc' },
       },
     },
@@ -24,8 +30,67 @@ export default async function ScenarioReportPage({ params }: ReportPageProps) {
 
   const total = scenario.sessions.length;
   const completed = scenario.sessions.filter((s) => s.completedAt).length;
-  const tutors = scenario.sessions.filter((s) => s.role === 'TUTOR').length;
-  const bystanders = scenario.sessions.filter((s) => s.role === 'BYSTANDER').length;
+  const tutorSessions = scenario.sessions.filter((s) => s.role === 'TUTOR');
+  const bystanderSessions = scenario.sessions.filter((s) => s.role === 'BYSTANDER');
+
+  // Build chart data for tutors
+  const tutorChartData = tutorSessions.map((s) => {
+    const hesitationEvents: Array<{ isFixation?: boolean }> = s.metrics
+      ? JSON.parse(s.metrics.hesitationEvents)
+      : [];
+    const decisionSequence: Array<{ action: string; undone: boolean }> = s.metrics
+      ? JSON.parse(s.metrics.decisionSequence)
+      : s.actions.map((a) => ({ action: a.type, undone: false }));
+    const duration =
+      s.metrics?.totalDuration ??
+      (s.completedAt
+        ? new Date(s.completedAt).getTime() - new Date(s.createdAt).getTime()
+        : null);
+    const applied = decisionSequence.filter((d) => !d.undone);
+    return {
+      deleteCount: applied.filter((d) => d.action === 'DELETE_MESSAGE').length,
+      warnCount:   applied.filter((d) => d.action === 'WARN_MESSAGE').length,
+      totalUndos:  s.metrics?.totalUndos ?? decisionSequence.filter((d) => d.undone).length,
+      hesitations: hesitationEvents.filter((h) => !h.isFixation).length,
+      fixations:   hesitationEvents.filter((h) => h.isFixation).length,
+      duration,
+    };
+  });
+
+  // Build chart data for bystanders
+  const bystanderChartData = bystanderSessions.map((s) => ({
+    participantName: s.participantName,
+    duration: s.completedAt
+      ? new Date(s.completedAt).getTime() - new Date(s.createdAt).getTime()
+      : null,
+  }));
+
+  // Aggregate questionnaire answers across all bystander sessions
+  const allAnswers = bystanderSessions.flatMap((s) => s.bystanderAnswers);
+  const answersByQuestion = allAnswers.reduce<Record<string, string[]>>((acc, a) => {
+    if (!acc[a.questionId]) acc[a.questionId] = [];
+    acc[a.questionId].push(a.answer);
+    return acc;
+  }, {});
+
+  const QUESTION_LABELS: Record<string, string> = {
+    q1: 'Intensidade do cyberbullying (1–5)',
+    q2: 'Como se sentiu',
+    q3: 'O que faria',
+    q4: 'Consequência sugerida',
+  };
+
+  const questionnaireData = Object.entries(answersByQuestion).map(([qId, answers]) => {
+    const counts = answers.reduce<Record<string, number>>((acc, a) => {
+      acc[a] = (acc[a] ?? 0) + 1;
+      return acc;
+    }, {});
+    return {
+      questionId: qId,
+      label: QUESTION_LABELS[qId] ?? qId,
+      data: Object.entries(counts).map(([name, value]) => ({ name, value })),
+    };
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,16 +127,78 @@ export default async function ScenarioReportPage({ params }: ReportPageProps) {
           </Card>
           <Card padding="sm">
             <div className="p-4 text-center">
-              <p className="text-3xl font-bold text-chat-header">{tutors}</p>
+              <p className="text-3xl font-bold text-chat-header">{tutorSessions.length}</p>
               <p className="text-sm text-gray-500">Tutores</p>
             </div>
           </Card>
           <Card padding="sm">
             <div className="p-4 text-center">
-              <p className="text-3xl font-bold text-action-info">{bystanders}</p>
+              <p className="text-3xl font-bold text-action-info">{bystanderSessions.length}</p>
               <p className="text-sm text-gray-500">Observadores</p>
             </div>
           </Card>
+        </div>
+
+        {/* Charts — Tutor */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader
+              title="Tutores — Ações & Hesitações"
+              description={`Totais agregados de ${tutorSessions.length} sessão(ões)`}
+            />
+            <CardContent>
+              <TutorAggregateChart sessions={tutorChartData} />
+              <div className="flex flex-wrap gap-3 mt-3 justify-center">
+                {[
+                  { color: '#dc2626', label: 'Excluir' },
+                  { color: '#d97706', label: 'Aviso' },
+                  { color: '#9ca3af', label: 'Desfeitas' },
+                  { color: '#6b7280', label: 'Hesitações' },
+                  { color: '#7c3aed', label: 'Fixações' },
+                ].map(({ color, label }) => (
+                  <div key={label} className="flex items-center gap-1.5">
+                    <span className="h-3 w-3 rounded-sm inline-block" style={{ backgroundColor: color }} />
+                    <span className="text-xs text-gray-500">{label}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title="Tutores — Duração por Sessão"
+              description="Tempo total de cada sessão de tutor"
+            />
+            <CardContent>
+              <TutorDurationChart sessions={tutorChartData} />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Charts — Bystander */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader
+              title="Observadores — Duração por Sessão"
+              description="Tempo total de cada sessão de observador"
+            />
+            <CardContent>
+              <BystanderDurationChart sessions={bystanderChartData} />
+            </CardContent>
+          </Card>
+
+          {questionnaireData.length > 0 && (
+            <Card>
+              <CardHeader
+                title="Observadores — Respostas do Questionário"
+                description={`${allAnswers.length / (questionnaireData.length || 1) | 0} respondente(s)`}
+              />
+              <CardContent>
+                <BystanderQuestionnaireCharts questions={questionnaireData} />
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Sessions table */}
@@ -96,6 +223,7 @@ export default async function ScenarioReportPage({ params }: ReportPageProps) {
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Início</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Conclusão</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -129,6 +257,11 @@ export default async function ScenarioReportPage({ params }: ReportPageProps) {
                                 hour: '2-digit', minute: '2-digit',
                               })
                             : '—'}
+                        </td>
+                        <td className="px-4 py-4">
+                          <Link href={`/admin/sessions/${session.id}`}>
+                            <Button size="sm" variant="ghost">Ver Detalhes</Button>
+                          </Link>
                         </td>
                       </tr>
                     ))}

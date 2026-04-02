@@ -70,15 +70,14 @@ export default function BystanderSessionPage() {
   const handleSubmitQuestionnaire = async (
     answers: Omit<CreateBystanderAnswerInput, 'sessionId'>[]
   ) => {
-    console.log('Questionnaire answers:', answers);
-    setShowQuestionnaire(false);
-    setShowThankYou(true);
-  };
-
-  const handleFinalize = async () => {
     try {
-      await fetch(`/api/sessions/${sessionId}`, { method: 'PATCH' });
-    } catch { /* ignore */ }
+      await fetch('/api/bystander-answers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, answers }),
+      });
+    } catch { /* session still shows thank you even if save fails */ }
+    setShowQuestionnaire(false);
     setShowThankYou(true);
   };
 
@@ -182,8 +181,8 @@ export default function BystanderSessionPage() {
           chat.isComplete ? (
             <div className="flex items-center justify-between gap-3 bg-green-50 border-t border-green-200 px-4 py-3">
               <p className="text-sm text-green-800 font-medium">A conversa chegou ao fim.</p>
-              <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={handleFinalize}>
-                Finalizar Sessão
+              <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setShowQuestionnaire(true)}>
+                Responder Questionário
               </Button>
             </div>
           ) : (
@@ -213,7 +212,6 @@ export default function BystanderSessionPage() {
       <QuestionnaireModal
         isOpen={showQuestionnaire}
         onClose={() => {}}
-        questions={[]}
         onSubmit={handleSubmitQuestionnaire}
         sessionId={sessionId}
       />

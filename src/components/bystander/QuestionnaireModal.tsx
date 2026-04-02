@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 interface QuestionnaireModalProps {
   isOpen: boolean;
   onClose: () => void;
-  questions: BystanderQuestion[];
+  questions?: BystanderQuestion[];
   onSubmit: (answers: Omit<CreateBystanderAnswerInput, 'sessionId'>[]) => Promise<void>;
   sessionId: string;
 }
