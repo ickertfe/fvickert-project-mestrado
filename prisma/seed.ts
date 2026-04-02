@@ -9,6 +9,8 @@ interface ScenarioData {
   id: string;
   name: string;
   description: string;
+  softName?: string;
+  softDescription?: string;
   type: 'FLAMING' | 'SOCIAL_EXCLUSION' | 'DENIGRATION';
   participants: Array<{
     id: string;
@@ -37,12 +39,16 @@ async function seedScenario(scenarioData: ScenarioData) {
     update: {
       name: scenarioData.name,
       description: scenarioData.description,
+      softName: scenarioData.softName ?? null,
+      softDescription: scenarioData.softDescription ?? null,
       type: scenarioData.type,
     },
     create: {
       id: scenarioData.id,
       name: scenarioData.name,
       description: scenarioData.description,
+      softName: scenarioData.softName ?? null,
+      softDescription: scenarioData.softDescription ?? null,
       type: scenarioData.type,
       isActive: true,
     },
@@ -163,6 +169,21 @@ async function seedBystanderQuestions() {
   console.log(`  - Created ${questions.length} questions`);
 }
 
+async function seedAdminConfig() {
+  console.log('Seeding admin config...');
+  await prisma.adminConfig.upsert({
+    where: { id: 'default' },
+    update: {},
+    create: {
+      id: 'default',
+      requireUserIdentification: false,
+      showRoleToParticipants: false,
+      showScenarioType: false,
+    },
+  });
+  console.log('  - Admin config ready');
+}
+
 async function main() {
   console.log('Starting database seed...\n');
 
@@ -173,6 +194,9 @@ async function main() {
 
   // Seed bystander questions
   await seedBystanderQuestions();
+
+  // Seed admin config
+  await seedAdminConfig();
 
   console.log('\nDatabase seed completed successfully!');
 }

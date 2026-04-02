@@ -1,11 +1,13 @@
 'use client';
 
+import type React from 'react';
 import { type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 interface CardProps {
   children: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   padding?: 'none' | 'sm' | 'md' | 'lg';
   onClick?: () => void;
 }
@@ -17,7 +19,7 @@ const paddingClasses = {
   lg: 'p-8',
 };
 
-export function Card({ children, className, padding = 'md', onClick }: CardProps) {
+export function Card({ children, className, style, padding = 'md', onClick }: CardProps) {
   return (
     <div
       className={cn(
@@ -26,6 +28,7 @@ export function Card({ children, className, padding = 'md', onClick }: CardProps
         onClick && 'cursor-pointer',
         className
       )}
+      style={style}
       onClick={onClick}
     >
       {children}

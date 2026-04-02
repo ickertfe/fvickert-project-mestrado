@@ -20,6 +20,15 @@ const sizeClasses = {
   xl: 'h-16 w-16 text-lg',
 };
 
+// Same dimensions as sizeClasses but for the outer wrapper
+const wrapperSizeClasses = {
+  xs: 'h-6 w-6',
+  sm: 'h-8 w-8',
+  md: 'h-10 w-10',
+  lg: 'h-12 w-12',
+  xl: 'h-16 w-16',
+};
+
 const onlineSizeClasses = {
   xs: 'h-1.5 w-1.5',
   sm: 'h-2 w-2',
@@ -40,7 +49,7 @@ export function Avatar({
   const bgColor = getAvatarColor(name);
 
   return (
-    <div className={cn('relative inline-block', className)}>
+    <div className={cn('relative flex-shrink-0 rounded-full', wrapperSizeClasses[size], className)}>
       {src ? (
         <div
           className={cn(
@@ -59,9 +68,9 @@ export function Avatar({
         <div
           className={cn(
             'flex items-center justify-center rounded-full font-medium text-white',
-            sizeClasses[size],
-            bgColor
+            sizeClasses[size]
           )}
+          style={{ backgroundColor: bgColor }}
         >
           {initials}
         </div>

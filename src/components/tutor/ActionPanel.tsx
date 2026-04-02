@@ -43,23 +43,10 @@ export function ActionPanel({
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <StatItem
-            label="Tempo"
-            value={formatDuration(stats.elapsedTime)}
-          />
-          <StatItem
-            label="Ações"
-            value={stats.totalActions.toString()}
-          />
-          <StatItem
-            label="Desfazer"
-            value={stats.totalUndos.toString()}
-          />
-          <StatItem
-            label="Hesitações"
-            value={stats.totalHesitations.toString()}
-          />
+        <div className="grid grid-cols-3 gap-3">
+          <StatItem label="Tempo" value={formatDuration(stats.elapsedTime)} />
+          <StatItem label="Ações" value={stats.totalActions.toString()} />
+          <StatItem label="Desfeitas" value={stats.totalUndos.toString()} />
         </div>
 
         <div className="text-xs text-gray-500">

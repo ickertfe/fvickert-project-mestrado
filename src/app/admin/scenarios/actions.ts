@@ -7,6 +7,8 @@ import { z } from 'zod';
 const scenarioSchema = z.object({
   name: z.string().min(3, 'Nome deve ter ao menos 3 caracteres').max(200),
   description: z.string().min(10, 'Descrição deve ter ao menos 10 caracteres').max(1000),
+  softName: z.string().max(200).optional(),
+  softDescription: z.string().max(1000).optional(),
   type: z.enum(['FLAMING', 'SOCIAL_EXCLUSION', 'DENIGRATION'], {
     errorMap: () => ({ message: 'Tipo inválido' }),
   }),
@@ -25,6 +27,8 @@ export async function createScenario(
   const raw = {
     name: formData.get('name'),
     description: formData.get('description'),
+    softName: formData.get('softName') || undefined,
+    softDescription: formData.get('softDescription') || undefined,
     type: formData.get('type'),
     isActive: formData.get('isActive') === 'true',
   };
@@ -50,6 +54,8 @@ export async function updateScenario(
   const raw = {
     name: formData.get('name'),
     description: formData.get('description'),
+    softName: formData.get('softName') || undefined,
+    softDescription: formData.get('softDescription') || undefined,
     type: formData.get('type'),
     isActive: formData.get('isActive') === 'true',
   };

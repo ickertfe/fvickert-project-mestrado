@@ -14,16 +14,24 @@ interface MessageBubbleProps {
   message: DisplayMessage;
   participant: ChatParticipant;
   canTakeActions?: boolean;
+  showRole?: boolean;
   onAction?: (messageId: string, action: ActionType) => void;
   onHoverStart?: (messageId: string, actionType: ActionType) => void;
   onHoverEnd?: () => void;
   className?: string;
 }
 
+const ROLE_RING: Record<string, string> = {
+  AGGRESSOR: 'ring-2 ring-red-400',
+  VICTIM: 'ring-2 ring-amber-400',
+  NEUTRAL: 'ring-2 ring-gray-300',
+};
+
 export function MessageBubble({
   message,
   participant,
   canTakeActions = false,
+  showRole = true,
   onAction,
   onHoverStart,
   onHoverEnd,
@@ -42,41 +50,28 @@ export function MessageBubble({
     }
   };
 
-  const getMessageStatusStyles = () => {
-    const styles: string[] = [];
-
-    if (message.isDeleted) {
-      styles.push('opacity-50 line-through');
-    }
-    if (message.hasWarning) {
-      styles.push('ring-2 ring-action-warning');
-    }
-    if (message.hasDangerMark) {
-      styles.push('ring-2 ring-action-danger');
-    }
-    if (message.hasAttentionMark) {
-      styles.push('ring-2 ring-action-info');
-    }
-
-    return styles.join(' ');
+  const getBubbleRing = () => {
+    if (message.hasDangerMark) return 'ring-2 ring-action-danger';
+    if (message.hasWarning) return 'ring-2 ring-action-warning';
+    if (message.hasAttentionMark) return 'ring-2 ring-action-info';
+    return '';
   };
 
   const renderContent = (): ReactNode => {
     switch (message.type) {
       case 'EMOJI':
         return <span className="text-4xl">{message.content}</span>;
-      case 'IMAGE':
+      case 'IMAGE': {
         const metadata = message.metadata as { imageUrl?: string; caption?: string } | undefined;
         return (
           <div>
             <div className="mb-1 rounded bg-gray-100 p-2 text-sm text-gray-600 italic">
               {message.content}
             </div>
-            {metadata?.caption && (
-              <p className="text-sm">{metadata.caption}</p>
-            )}
+            {metadata?.caption && <p className="text-sm">{metadata.caption}</p>}
           </div>
         );
+      }
       case 'AUDIO':
         return (
           <div className="flex items-center gap-2">
@@ -98,8 +93,29 @@ export function MessageBubble({
     }
   };
 
-  if (message.isDeleted && !canTakeActions) {
-    return null;
+  // Deleted message — show red overlay with explanation
+  if (message.isDeleted) {
+    if (!canTakeActions) return null;
+    return (
+      <div className={cn('flex gap-2 animate-slide-up', className)}>
+        <Avatar
+          src={participant.avatar}
+          name={participant.name}
+          size="sm"
+          className={cn('self-start mt-1', ROLE_RING[participant.role])}
+        />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-sm font-medium text-gray-400">{participant.name}</span>
+          </div>
+          <div className="relative inline-block max-w-[85%] rounded-lg bg-red-50 border border-red-200 px-3 py-2">
+            <p className="text-xs text-red-500 italic">
+              Mensagem excluída por ser considerada bullying
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -115,21 +131,19 @@ export function MessageBubble({
         src={participant.avatar}
         name={participant.name}
         size="sm"
-        className="flex-shrink-0 mt-1"
+        className={cn('self-start mt-1', ROLE_RING[participant.role])}
       />
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-sm font-medium text-gray-900">
-            {participant.name}
-          </span>
-          {getRoleBadge()}
+          <span className="text-sm font-medium text-gray-900">{participant.name}</span>
+          {showRole && getRoleBadge()}
         </div>
 
         <div
           className={cn(
             'relative inline-block max-w-[85%] rounded-lg bg-chat-incoming px-3 py-2 shadow-sm',
-            getMessageStatusStyles()
+            getBubbleRing()
           )}
         >
           {renderContent()}

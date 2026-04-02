@@ -9,6 +9,7 @@ interface ScenarioSelectorProps {
   scenarios: ScenarioListItem[];
   selectedId?: string;
   onSelect: (scenario: ScenarioListItem) => void;
+  showType?: boolean;
   className?: string;
 }
 
@@ -24,10 +25,17 @@ const scenarioTypeBadgeVariant: Record<ScenarioType, 'danger' | 'warning' | 'inf
   DENIGRATION: 'info',
 };
 
+const scenarioTypePastel: Record<ScenarioType, { bg: string; accent: string }> = {
+  FLAMING:          { bg: '#fff4f6', accent: '#f9a8c9' },
+  SOCIAL_EXCLUSION: { bg: '#f5f3ff', accent: '#c4b5fd' },
+  DENIGRATION:      { bg: '#f0faf5', accent: '#6ee7b7' },
+};
+
 export function ScenarioSelector({
   scenarios,
   selectedId,
   onSelect,
+  showType = true,
   className,
 }: ScenarioSelectorProps) {
   if (scenarios.length === 0) {
@@ -45,25 +53,33 @@ export function ScenarioSelector({
           key={scenario.id}
           padding="sm"
           className={cn(
-            'cursor-pointer transition-all hover:shadow-md',
+            'cursor-pointer transition-all hover:shadow-md border-l-4',
             selectedId === scenario.id
-              ? 'ring-2 ring-chat-header bg-chat-header/5'
+              ? 'ring-2 ring-chat-header'
               : 'hover:border-chat-header/50'
           )}
+          style={{
+            backgroundColor: selectedId === scenario.id
+              ? scenarioTypePastel[scenario.type].bg
+              : scenarioTypePastel[scenario.type].bg,
+            borderLeftColor: scenarioTypePastel[scenario.type].accent,
+          }}
           onClick={() => onSelect(scenario)}
         >
           <div className="flex items-start justify-between gap-4 p-2">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-medium text-gray-900 truncate">
-                  {scenario.name}
+                  {showType ? scenario.name : (scenario.softName ?? scenario.name)}
                 </h3>
-                <Badge variant={scenarioTypeBadgeVariant[scenario.type]}>
-                  {scenarioTypeLabels[scenario.type]}
-                </Badge>
+                {showType && (
+                  <Badge variant={scenarioTypeBadgeVariant[scenario.type]}>
+                    {scenarioTypeLabels[scenario.type]}
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-gray-500 line-clamp-2">
-                {scenario.description}
+                {showType ? scenario.description : (scenario.softDescription ?? scenario.description)}
               </p>
               <div className="mt-2 flex items-center gap-4 text-xs text-gray-400">
                 <span>{scenario.messageCount} mensagens</span>

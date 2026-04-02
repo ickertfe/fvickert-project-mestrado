@@ -2,6 +2,8 @@
   "id": "scenario-flaming-001",
   "name": "Discussão Acalorada no Grupo de Trabalho",
   "description": "Simulação de conflito onde um participante se torna hostil após discordância sobre um projeto",
+  "softName": "Conversa em Equipe",
+  "softDescription": "Acompanhe as trocas de mensagens entre integrantes de uma equipe colaborativa.",
   "type": "FLAMING",
   "participants": [
     {

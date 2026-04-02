@@ -2,6 +2,8 @@
   "id": "scenario-exclusion-001",
   "name": "Exclusão do Grupo de Amigos",
   "description": "Simulação onde participantes deliberadamente excluem uma pessoa das conversas e planejamentos",
+  "softName": "Rede de Convivência",
+  "softDescription": "Observe as interações cotidianas entre participantes de um grupo de convivência.",
   "type": "SOCIAL_EXCLUSION",
   "participants": [
     {

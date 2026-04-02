@@ -26,6 +26,8 @@ export interface ScenarioListItem {
   id: string;
   name: string;
   description: string;
+  softName?: string | null;
+  softDescription?: string | null;
   type: ScenarioType;
   isActive: boolean;
   messageCount: number;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -9,42 +9,10 @@ import { ScenarioSelector } from '@/components/shared/ScenarioSelector';
 import { DisclaimerModal } from '@/components/shared/DisclaimerModal';
 import type { ScenarioListItem } from '@/types/scenario';
 
-// Mock scenarios for now - will be fetched from API
-const mockScenarios: ScenarioListItem[] = [
-  {
-    id: 'scenario-flaming-001',
-    name: 'Discussão Acalorada no Grupo de Trabalho',
-    description: 'Simulação de conflito onde um participante se torna hostil após discordância sobre um projeto',
-    type: 'FLAMING',
-    isActive: true,
-    messageCount: 9,
-    participantCount: 3,
-    sessionCount: 0,
-    createdAt: new Date(),
-  },
-  {
-    id: 'scenario-exclusion-001',
-    name: 'Exclusão do Grupo de Amigos',
-    description: 'Simulação onde participantes deliberadamente excluem uma pessoa das conversas e planejamentos',
-    type: 'SOCIAL_EXCLUSION',
-    isActive: true,
-    messageCount: 9,
-    participantCount: 3,
-    sessionCount: 0,
-    createdAt: new Date(),
-  },
-  {
-    id: 'scenario-denigration-001',
-    name: 'Rumores Falsos no Grupo',
-    description: 'Simulação onde participantes espalham informações falsas sobre uma pessoa',
-    type: 'DENIGRATION',
-    isActive: true,
-    messageCount: 9,
-    participantCount: 3,
-    sessionCount: 0,
-    createdAt: new Date(),
-  },
-];
+function generateToken(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  return Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
 
 type Step = 'info' | 'scenario' | 'disclaimer';
 
@@ -56,56 +24,64 @@ export default function TutorPage() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioListItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [scenarios, setScenarios] = useState<ScenarioListItem[]>([]);
+  const [requireIdentification, setRequireIdentification] = useState<boolean | null>(null);
+  const [showScenarioType, setShowScenarioType] = useState(false);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/scenarios?active=true').then((r) => r.json()),
+      fetch('/api/config').then((r) => r.json()),
+    ]).then(([scenariosData, configData]) => {
+      setScenarios(scenariosData);
+      const requireId = configData.requireUserIdentification ?? false;
+      setRequireIdentification(requireId);
+      setShowScenarioType(configData.showScenarioType ?? false);
+      if (!requireId) setStep('scenario');
+    });
+  }, []);
 
   const validateInfo = () => {
     const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = 'Nome é obrigatório';
-    }
-
-    if (!email.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Email inválido';
-    }
-
+    if (!name.trim()) newErrors.name = 'Nome é obrigatório';
+    if (!email.trim()) newErrors.email = 'Email é obrigatório';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = 'Email inválido';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleNextFromInfo = () => {
-    if (validateInfo()) {
+    if (requireIdentification) {
+      if (validateInfo()) setStep('scenario');
+    } else {
       setStep('scenario');
     }
   };
 
   const handleNextFromScenario = () => {
-    if (selectedScenario) {
-      setStep('disclaimer');
-    }
+    if (selectedScenario) setStep('disclaimer');
   };
 
   const handleAcceptDisclaimer = async () => {
     if (!selectedScenario) return;
-
     setIsLoading(true);
     try {
+      const token = generateToken();
+      const participantName = requireIdentification ? name : `Tutor-${token}`;
+      const participantEmail = requireIdentification ? email : `${token.toLowerCase()}@anonymous.local`;
+
       const response = await fetch('/api/sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          participantName: name,
-          participantEmail: email,
+          participantName,
+          participantEmail,
           role: 'TUTOR',
           scenarioId: selectedScenario.id,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create session');
-      }
-
+      if (!response.ok) throw new Error('Failed to create session');
       const session = await response.json();
       router.push(`/tutor/${session.id}`);
     } catch (error) {
@@ -114,34 +90,43 @@ export default function TutorPage() {
     }
   };
 
-  const handleDeclineDisclaimer = () => {
-    router.push('/');
-  };
+  const handleDeclineDisclaimer = () => router.push('/');
+
+  // Wait until config is loaded to decide which steps to show
+  if (requireIdentification === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-chat-header border-t-transparent" />
+      </div>
+    );
+  }
+
+  const steps = requireIdentification
+    ? (['info', 'scenario', 'disclaimer'] as Step[])
+    : (['scenario', 'disclaimer'] as Step[]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="mx-auto max-w-2xl px-4">
         {/* Progress Steps */}
         <div className="mb-8 flex items-center justify-center gap-2">
-          {['info', 'scenario', 'disclaimer'].map((s, i) => (
+          {steps.map((s, i) => (
             <div key={s} className="flex items-center">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
                   step === s
                     ? 'bg-chat-header text-white'
-                    : i < ['info', 'scenario', 'disclaimer'].indexOf(step)
+                    : steps.indexOf(step) > i
                     ? 'bg-chat-header/20 text-chat-header'
                     : 'bg-gray-200 text-gray-500'
                 }`}
               >
                 {i + 1}
               </div>
-              {i < 2 && (
+              {i < steps.length - 1 && (
                 <div
                   className={`mx-2 h-0.5 w-12 ${
-                    i < ['info', 'scenario', 'disclaimer'].indexOf(step)
-                      ? 'bg-chat-header/20'
-                      : 'bg-gray-200'
+                    steps.indexOf(step) > i ? 'bg-chat-header/20' : 'bg-gray-200'
                   }`}
                 />
               )}
@@ -149,13 +134,10 @@ export default function TutorPage() {
           ))}
         </div>
 
-        {/* Step Content */}
-        {step === 'info' && (
+        {/* Step: info (only when requireIdentification) */}
+        {step === 'info' && requireIdentification && (
           <Card>
-            <CardHeader
-              title="Participar como Tutor"
-              description="Informe seus dados para continuar"
-            />
+            <CardHeader title="Participar como Tutor" description="Informe seus dados para continuar" />
             <CardContent className="space-y-4">
               <Input
                 label="Nome completo"
@@ -174,31 +156,29 @@ export default function TutorPage() {
               />
             </CardContent>
             <CardFooter>
-              <Button variant="ghost" onClick={() => router.push('/')}>
-                Cancelar
-              </Button>
-              <Button onClick={handleNextFromInfo}>
-                Continuar
-              </Button>
+              <Button variant="ghost" onClick={() => router.push('/')}>Cancelar</Button>
+              <Button onClick={handleNextFromInfo}>Continuar</Button>
             </CardFooter>
           </Card>
         )}
 
+        {/* Step: scenario */}
         {step === 'scenario' && (
           <Card>
-            <CardHeader
-              title="Selecione um Cenário"
-              description="Escolha o cenário que deseja participar"
-            />
+            <CardHeader title="Selecione um Cenário" description="Escolha o cenário que deseja participar" />
             <CardContent>
               <ScenarioSelector
-                scenarios={mockScenarios}
+                scenarios={scenarios}
                 selectedId={selectedScenario?.id}
                 onSelect={setSelectedScenario}
+                showType={showScenarioType}
               />
             </CardContent>
             <CardFooter>
-              <Button variant="ghost" onClick={() => setStep('info')}>
+              <Button
+                variant="ghost"
+                onClick={() => (requireIdentification ? setStep('info') : router.push('/'))}
+              >
                 Voltar
               </Button>
               <Button onClick={handleNextFromScenario} disabled={!selectedScenario}>

@@ -25,6 +25,8 @@ export async function GET(request: NextRequest) {
       id: scenario.id,
       name: scenario.name,
       description: scenario.description,
+      softName: scenario.softName,
+      softDescription: scenario.softDescription,
       type: scenario.type,
       isActive: scenario.isActive,
       messageCount: scenario._count.messages,

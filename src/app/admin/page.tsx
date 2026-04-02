@@ -3,35 +3,37 @@ import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { prisma } from '@/lib/db';
+import { ConfigToggle } from './_components/ConfigToggle';
+import { CloseSessionButton } from './_components/CloseSessionButton';
 
 async function getAdminData() {
-  const [totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions] =
+  const [totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config] =
     await Promise.all([
       prisma.session.count(),
       prisma.session.count({ where: { completedAt: { not: null } } }),
       prisma.session.count({ where: { role: 'TUTOR' } }),
       prisma.session.count({ where: { role: 'BYSTANDER' } }),
       prisma.scenario.findMany({
-        include: {
-          _count: { select: { messages: true, participants: true, sessions: true } },
-        },
+        include: { _count: { select: { messages: true, participants: true, sessions: true } } },
         orderBy: { createdAt: 'desc' },
       }),
       prisma.session.findMany({
         take: 10,
-        include: {
-          scenario: true,
-          _count: { select: { actions: true } },
-        },
+        include: { scenario: true, _count: { select: { actions: true } } },
         orderBy: { createdAt: 'desc' },
+      }),
+      prisma.adminConfig.upsert({
+        where: { id: 'default' },
+        update: {},
+        create: { id: 'default', requireUserIdentification: false, showRoleToParticipants: false },
       }),
     ]);
 
-  return { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions };
+  return { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config };
 }
 
 export default async function AdminDashboard() {
-  const { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions } =
+  const { totalSessions, completedSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config } =
     await getAdminData();
 
   return (
@@ -53,9 +55,9 @@ export default async function AdminDashboard() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* Stats */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card padding="sm">
             <div className="p-4 text-center">
               <p className="text-3xl font-bold text-gray-900">{totalSessions}</p>
@@ -81,6 +83,36 @@ export default async function AdminDashboard() {
             </div>
           </Card>
         </div>
+
+        {/* Settings */}
+        <Card>
+          <CardHeader
+            title="Configurações Gerais"
+            description="Controle o comportamento do sistema para participantes"
+          />
+          <CardContent>
+            <div className="divide-y divide-gray-100">
+              <ConfigToggle
+                field="requireUserIdentification"
+                value={config.requireUserIdentification}
+                label="Exigir identificação do usuário"
+                description="Quando ativo, participantes precisam informar nome e e-mail antes de iniciar. Quando inativo, um token anônimo de 8 dígitos é gerado automaticamente."
+              />
+              <ConfigToggle
+                field="showRoleToParticipants"
+                value={config.showRoleToParticipants}
+                label="Mostrar papel dos personagens aos participantes"
+                description="Quando ativo, exibe os badges de papel (Agressor, Vítima, Neutro) nas mensagens durante a simulação."
+              />
+              <ConfigToggle
+                field="showScenarioType"
+                value={config.showScenarioType}
+                label="Mostrar tipo do cenário aos participantes"
+                description="Quando ativo, exibe o tipo (Flaming, Exclusão Social, Difamação) na seleção de cenário. Quando inativo, usa o nome e descrição genéricos."
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Scenarios */}
         <Card>
@@ -123,17 +155,13 @@ export default async function AdminDashboard() {
                         <td className="px-4 py-4">
                           <Badge
                             variant={
-                              scenario.type === 'FLAMING'
-                                ? 'danger'
-                                : scenario.type === 'SOCIAL_EXCLUSION'
-                                ? 'warning'
-                                : 'info'
+                              scenario.type === 'FLAMING' ? 'danger'
+                              : scenario.type === 'SOCIAL_EXCLUSION' ? 'warning'
+                              : 'info'
                             }
                           >
-                            {scenario.type === 'FLAMING'
-                              ? 'Flaming'
-                              : scenario.type === 'SOCIAL_EXCLUSION'
-                              ? 'Exclusão'
+                            {scenario.type === 'FLAMING' ? 'Flaming'
+                              : scenario.type === 'SOCIAL_EXCLUSION' ? 'Exclusão'
                               : 'Difamação'}
                           </Badge>
                         </td>
@@ -149,7 +177,9 @@ export default async function AdminDashboard() {
                             <Link href={`/admin/scenarios/${scenario.id}/edit`}>
                               <Button size="sm" variant="ghost">Editar</Button>
                             </Link>
-                            <Button size="sm" variant="ghost">Relatório</Button>
+                            <Link href={`/admin/scenarios/${scenario.id}/report`}>
+                              <Button size="sm" variant="ghost">Relatório</Button>
+                            </Link>
                           </div>
                         </td>
                       </tr>
@@ -162,7 +192,7 @@ export default async function AdminDashboard() {
         </Card>
 
         {/* Recent Sessions */}
-        <Card className="mt-8">
+        <Card>
           <CardHeader
             title="Sessões Recentes"
             description="Últimas participações registradas"
@@ -191,6 +221,7 @@ export default async function AdminDashboard() {
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Ações</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Data</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-500"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -218,12 +249,14 @@ export default async function AdminDashboard() {
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500">
                           {new Date(session.createdAt).toLocaleDateString('pt-BR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
+                            day: '2-digit', month: '2-digit', year: 'numeric',
+                            hour: '2-digit', minute: '2-digit',
                           })}
+                        </td>
+                        <td className="px-4 py-4">
+                          {!session.completedAt && (
+                            <CloseSessionButton sessionId={session.id} />
+                          )}
                         </td>
                       </tr>
                     ))}

@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Select } from '@/components/ui/Select';
@@ -25,10 +26,13 @@ interface ScenarioFormProps {
   initialData?: {
     name: string;
     description: string;
+    softName?: string | null;
+    softDescription?: string | null;
     type: string;
     isActive: boolean;
   };
   title: string;
+  extraContent?: ReactNode;
 }
 
 function SubmitButton() {
@@ -40,7 +44,7 @@ function SubmitButton() {
   );
 }
 
-export function ScenarioForm({ action, initialData, title }: ScenarioFormProps) {
+export function ScenarioForm({ action, initialData, title, extraContent }: ScenarioFormProps) {
   const [state, formAction] = useFormState(action, {});
 
   return (
@@ -68,6 +72,7 @@ export function ScenarioForm({ action, initialData, title }: ScenarioFormProps) 
         <Card>
           <CardContent>
             <form action={formAction} className="space-y-6 pt-4">
+
               <Input
                 label="Nome do Cenário"
                 name="name"
@@ -77,12 +82,29 @@ export function ScenarioForm({ action, initialData, title }: ScenarioFormProps) 
               />
 
               <Textarea
-                label="Descrição"
+                label="Descrição (admin)"
                 name="description"
                 defaultValue={initialData?.description}
-                placeholder="Descreva brevemente o cenário de simulação..."
-                className="min-h-[120px]"
+                placeholder="Descrição detalhada para uso interno do admin..."
+                className="min-h-[100px]"
                 error={state.errors?.description}
+              />
+
+              <Input
+                label="Nome genérico (exibido aos participantes)"
+                name="softName"
+                defaultValue={initialData?.softName ?? ''}
+                placeholder="Ex: Grupo de Trabalho"
+                error={state.errors?.softName}
+              />
+
+              <Textarea
+                label="Descrição genérica (exibida aos participantes)"
+                name="softDescription"
+                defaultValue={initialData?.softDescription ?? ''}
+                placeholder="Ex: Simulação de participantes em um grupo de trabalho"
+                className="min-h-[80px]"
+                error={state.errors?.softDescription}
               />
 
               <Select
@@ -112,6 +134,8 @@ export function ScenarioForm({ action, initialData, title }: ScenarioFormProps) 
             </form>
           </CardContent>
         </Card>
+
+        {extraContent}
       </main>
     </div>
   );

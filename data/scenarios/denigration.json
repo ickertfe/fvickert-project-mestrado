@@ -2,6 +2,8 @@
   "id": "scenario-denigration-001",
   "name": "Rumores Falsos no Grupo",
   "description": "Simulação onde participantes espalham informações falsas sobre uma pessoa",
+  "softName": "Chat da Turma",
+  "softDescription": "Explore as mensagens trocadas entre colegas em um grupo online do dia a dia.",
   "type": "DENIGRATION",
   "participants": [
     {

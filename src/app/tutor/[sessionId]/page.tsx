@@ -11,7 +11,6 @@ import type { Session } from '@/types/session';
 import type { Message } from '@/types/message';
 import type { ChatParticipant } from '@/types/scenario';
 
-// Mock data - will be fetched from API
 const mockSession: Session = {
   id: 'session-1',
   participantName: 'Participante',
@@ -32,96 +31,15 @@ const mockParticipants: ChatParticipant[] = [
 ];
 
 const mockMessages: Message[] = [
-  {
-    id: 'msg-1',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-2',
-    content: 'Pessoal, terminei a minha parte do relatório. Podem revisar?',
-    type: 'TEXT',
-    appearDelay: 0,
-    typingDuration: 2000,
-    order: 1,
-  },
-  {
-    id: 'msg-2',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-1',
-    content: 'Já vi. Tá bem fraco, sinceramente.',
-    type: 'TEXT',
-    appearDelay: 3000,
-    typingDuration: 1500,
-    order: 2,
-  },
-  {
-    id: 'msg-3',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-2',
-    content: 'Pode me dizer o que posso melhorar?',
-    type: 'TEXT',
-    appearDelay: 2000,
-    typingDuration: 1800,
-    order: 3,
-  },
-  {
-    id: 'msg-4',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-1',
-    content: 'Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.',
-    type: 'TEXT',
-    appearDelay: 1000,
-    typingDuration: 2500,
-    order: 4,
-  },
-  {
-    id: 'msg-5',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-3',
-    content: 'Calma, Carlos...',
-    type: 'TEXT',
-    appearDelay: 1500,
-    typingDuration: 1000,
-    order: 5,
-  },
-  {
-    id: 'msg-6',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-1',
-    content: 'Cala a boca, Pedro. Ninguém pediu sua opinião.',
-    type: 'TEXT',
-    appearDelay: 500,
-    typingDuration: 1200,
-    order: 6,
-  },
-  {
-    id: 'msg-7',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-1',
-    content: 'Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.',
-    type: 'TEXT',
-    appearDelay: 800,
-    typingDuration: 2000,
-    order: 7,
-  },
-  {
-    id: 'msg-8',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-2',
-    content: '😢',
-    type: 'EMOJI',
-    appearDelay: 2000,
-    typingDuration: null,
-    order: 8,
-  },
-  {
-    id: 'msg-9',
-    scenarioId: 'scenario-flaming-001',
-    participantId: 'part-1',
-    content: 'Vai chorar agora? Que patético!',
-    type: 'TEXT',
-    appearDelay: 1000,
-    typingDuration: 1500,
-    order: 9,
-  },
+  { id: 'msg-1', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: 'Pessoal, terminei a minha parte do relatório. Podem revisar?', type: 'TEXT', appearDelay: 0, typingDuration: 2000, order: 1 },
+  { id: 'msg-2', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Já vi. Tá bem fraco, sinceramente.', type: 'TEXT', appearDelay: 3000, typingDuration: 1500, order: 2 },
+  { id: 'msg-3', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: 'Pode me dizer o que posso melhorar?', type: 'TEXT', appearDelay: 2000, typingDuration: 1800, order: 3 },
+  { id: 'msg-4', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.', type: 'TEXT', appearDelay: 1000, typingDuration: 2500, order: 4 },
+  { id: 'msg-5', scenarioId: 'scenario-flaming-001', participantId: 'part-3', content: 'Calma, Carlos...', type: 'TEXT', appearDelay: 1500, typingDuration: 1000, order: 5 },
+  { id: 'msg-6', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Cala a boca, Pedro. Ninguém pediu sua opinião.', type: 'TEXT', appearDelay: 500, typingDuration: 1200, order: 6 },
+  { id: 'msg-7', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.', type: 'TEXT', appearDelay: 800, typingDuration: 2000, order: 7 },
+  { id: 'msg-8', scenarioId: 'scenario-flaming-001', participantId: 'part-2', content: '😢', type: 'EMOJI', appearDelay: 2000, typingDuration: null, order: 8 },
+  { id: 'msg-9', scenarioId: 'scenario-flaming-001', participantId: 'part-1', content: 'Vai chorar agora? Que patético!', type: 'TEXT', appearDelay: 1000, typingDuration: 1500, order: 9 },
 ];
 
 export default function TutorSessionPage() {
@@ -132,7 +50,14 @@ export default function TutorSessionPage() {
   const [session] = useState<Session>(mockSession);
   const [notes, setNotes] = useState<Array<{ id: string; sessionId: string; content: string; timestamp: Date }>>([]);
   const [hasStarted, setHasStarted] = useState(false);
-  const [showSummary, setShowSummary] = useState(false);
+  const [showExit, setShowExit] = useState(false);
+  const [showRole, setShowRole] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then((r) => r.json())
+      .then((cfg) => setShowRole(cfg.showRoleToParticipants ?? true));
+  }, []);
 
   const chat = useChat({
     sessionId,
@@ -140,7 +65,7 @@ export default function TutorSessionPage() {
     participants: mockParticipants,
     role: 'TUTOR',
     onComplete: () => {
-      setShowSummary(true);
+      // Session naturally finished — handled via banner in sidebar
     },
   });
 
@@ -150,110 +75,46 @@ export default function TutorSessionPage() {
   };
 
   const handleAddNote = async (content: string) => {
-    const newNote = {
-      id: `note-${Date.now()}`,
-      sessionId,
-      content,
-      timestamp: new Date(),
-    };
+    const newNote = { id: `note-${Date.now()}`, sessionId, content, timestamp: new Date() };
     setNotes((prev) => [...prev, newNote]);
   };
 
-  const handleFinish = () => {
-    const metrics = chat.finalizeChat();
-    console.log('Session metrics:', metrics);
-    router.push('/');
+  const handleFinalize = () => {
+    chat.finalizeChat();
+    setShowExit(true);
   };
 
-  if (!hasStarted) {
+  // ── Exit / Thank-you screen ──────────────────────────────────────────────
+  if (showExit) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <Card className="max-w-md text-center">
-          <div className="p-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-chat-header/10">
-              <svg
-                className="h-8 w-8 text-chat-header"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">Pronto para começar?</h1>
-            <p className="mt-2 text-gray-600">
-              Você irá observar uma simulação de conversa em grupo. Como tutor, você pode
-              executar ações de moderação clicando nas mensagens.
-            </p>
-            <div className="mt-6 space-y-3">
-              <Button onClick={handleStart} className="w-full">
-                Iniciar Simulação
-              </Button>
-              <Button variant="ghost" onClick={() => router.push('/')} className="w-full">
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  if (showSummary) {
-    const metrics = chat.finalizeChat();
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <Card className="max-w-md text-center">
-          <div className="p-8">
+        <Card className="max-w-md w-full">
+          <div className="p-8 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-              <svg
-                className="h-8 w-8 text-green-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
+              <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Sessão Concluída!</h1>
+
+            <h1 className="text-2xl font-bold text-gray-900">Obrigado por participar!</h1>
             <p className="mt-2 text-gray-600">
-              Obrigado pela sua participação.
+              Sua participação como <strong>Tutor</strong> foi registrada com sucesso.
             </p>
-            <div className="mt-6 rounded-lg bg-gray-50 p-4 text-left">
-              <h3 className="font-medium text-gray-900">Resumo da Sessão</h3>
-              <dl className="mt-2 space-y-1 text-sm">
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Total de ações:</dt>
-                  <dd className="font-medium">{metrics.totalActions}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Ações desfeitas:</dt>
-                  <dd className="font-medium">{metrics.totalUndos}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Hesitações:</dt>
-                  <dd className="font-medium">{metrics.hesitationEvents.length}</dd>
-                </div>
-              </dl>
+
+            <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 p-4 text-left space-y-3">
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Identificador da sessão</p>
+                <p className="mt-1 font-mono text-sm font-bold text-gray-800 break-all">{sessionId}</p>
+              </div>
+              <div className="border-t border-gray-200 pt-3">
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  🔒 <strong>Sua participação é anônima.</strong> Nenhum dado pessoal foi coletado ou associado a esta sessão. O identificador acima serve apenas para fins de pesquisa e não permite identificar você.
+                </p>
+              </div>
             </div>
-            <Button onClick={handleFinish} className="mt-6 w-full">
-              Finalizar
+
+            <Button onClick={() => router.push('/')} className="mt-6 w-full">
+              Voltar ao início
             </Button>
           </div>
         </Card>
@@ -261,16 +122,44 @@ export default function TutorSessionPage() {
     );
   }
 
+  // ── Pre-start screen ─────────────────────────────────────────────────────
+  if (!hasStarted) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+        <Card className="max-w-md text-center">
+          <div className="p-8">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-chat-header/10">
+              <svg className="h-8 w-8 text-chat-header" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Pronto para começar?</h1>
+            <p className="mt-2 text-gray-600">
+              Você irá observar uma simulação de conversa em grupo. Como tutor, você pode executar ações de moderação clicando nas mensagens.
+            </p>
+            <div className="mt-6 space-y-3">
+              <Button onClick={handleStart} className="w-full">Iniciar Simulação</Button>
+              <Button variant="ghost" onClick={() => router.push('/')} className="w-full">Cancelar</Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // ── Active session ────────────────────────────────────────────────────────
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Chat Area */}
-      <div className="flex flex-1 flex-col">
+      {/* Chat area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
         <ChatContainer
           header={
             <ChatHeader
               groupName="Grupo de Trabalho"
               participants={mockParticipants}
               typingParticipant={chat.typingParticipant}
+              showLegend
             />
           }
           className="h-full"
@@ -278,22 +167,27 @@ export default function TutorSessionPage() {
           {chat.visibleMessages.map((message) => {
             const participant = chat.getParticipant(message.participantId);
             if (!participant) return null;
-
             return (
               <MessageBubble
                 key={message.id}
                 message={message}
                 participant={participant}
                 canTakeActions={chat.canTakeActions}
+                showRole={showRole}
                 onAction={chat.executeAction}
                 onHoverStart={chat.onMessageHoverStart}
                 onHoverEnd={chat.onMessageHoverEnd}
               />
             );
           })}
+          {chat.typingParticipant && <TypingIndicator participant={chat.typingParticipant} />}
 
-          {chat.typingParticipant && (
-            <TypingIndicator participant={chat.typingParticipant} />
+          {/* Session-ended banner inside the chat */}
+          {chat.isComplete && (
+            <div className="mx-4 my-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-center">
+              <p className="text-sm font-medium text-green-800">A conversa chegou ao fim.</p>
+              <p className="text-xs text-green-600 mt-0.5">Clique em "Finalizar Sessão" no painel lateral para encerrar.</p>
+            </div>
           )}
         </ChatContainer>
       </div>
@@ -307,16 +201,15 @@ export default function TutorSessionPage() {
           isLoading={chat.isLoading}
         />
 
-        <NotesPanel
-          notes={notes}
-          onAddNote={handleAddNote}
-        />
+        <NotesPanel notes={notes} onAddNote={handleAddNote} />
 
-        {chat.isComplete && (
-          <Button onClick={() => setShowSummary(true)} className="w-full">
-            Ver Resumo
-          </Button>
-        )}
+        <Button
+          variant="destructive"
+          className="w-full"
+          onClick={handleFinalize}
+        >
+          Finalizar Sessão
+        </Button>
       </div>
     </div>
   );

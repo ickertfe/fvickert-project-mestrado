@@ -18,11 +18,6 @@ interface UseChatOptions {
 }
 
 export interface ChatState {
-  visibleMessages: DisplayMessage[];
-  typingParticipant: ChatParticipant | null;
-  isPlaying: boolean;
-  isPaused: boolean;
-  isComplete: boolean;
   canTakeActions: boolean;
   participants: ChatParticipant[];
 }
@@ -35,27 +30,14 @@ export function useChat({
   onComplete,
   onError,
 }: UseChatOptions) {
-  const [chatState, setChatState] = useState<ChatState>({
-    visibleMessages: [],
-    typingParticipant: null,
-    isPlaying: false,
-    isPaused: false,
-    isComplete: false,
+  const [chatState] = useState<ChatState>({
     canTakeActions: role === 'TUTOR',
     participants,
   });
 
   // Timeline hook for message display
   const timeline = useTimeline(messages, {
-    onTypingStart: (participantId) => {
-      const participant = participants.find((p) => p.id === participantId);
-      setChatState((s) => ({ ...s, typingParticipant: participant || null }));
-    },
-    onTypingEnd: () => {
-      setChatState((s) => ({ ...s, typingParticipant: null }));
-    },
     onComplete: () => {
-      setChatState((s) => ({ ...s, isComplete: true }));
       onComplete?.();
     },
   });
@@ -84,22 +66,6 @@ export function useChat({
     onError,
   });
 
-  // Sync timeline state with chat state
-  useEffect(() => {
-    setChatState((s) => ({
-      ...s,
-      visibleMessages: timeline.visibleMessages,
-      isPlaying: timeline.isPlaying,
-      isPaused: timeline.isPaused,
-      isComplete: timeline.isComplete,
-    }));
-  }, [
-    timeline.visibleMessages,
-    timeline.isPlaying,
-    timeline.isPaused,
-    timeline.isComplete,
-  ]);
-
   // Start the chat simulation
   const startChat = useCallback(() => {
     timeline.start();
@@ -118,14 +84,6 @@ export function useChat({
   // Reset the simulation
   const resetChat = useCallback(() => {
     timeline.reset();
-    setChatState((s) => ({
-      ...s,
-      visibleMessages: [],
-      typingParticipant: null,
-      isPlaying: false,
-      isPaused: false,
-      isComplete: false,
-    }));
   }, [timeline]);
 
   // Execute an action on a message (tutor only)
@@ -179,9 +137,22 @@ export function useChat({
     return metrics.finalize();
   }, [metrics]);
 
+  const typingParticipant = timeline.typingParticipantId
+    ? participants.find((p) => p.id === timeline.typingParticipantId) ?? null
+    : null;
+
   return {
-    // State
-    ...chatState,
+    // Timeline state (exposed directly — no intermediate useEffect)
+    visibleMessages: timeline.visibleMessages,
+    isPlaying: timeline.isPlaying,
+    isPaused: timeline.isPaused,
+    isComplete: timeline.isComplete,
+    typingParticipant,
+
+    // Static state
+    canTakeActions: chatState.canTakeActions,
+    participants: chatState.participants,
+
     stats: metrics.getStats(),
     canUndo: actions.canUndo,
     isLoading: actions.isLoading,

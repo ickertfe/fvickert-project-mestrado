@@ -13,11 +13,13 @@ datasource db {
 // Cenário de cyberbullying
 // type: FLAMING | SOCIAL_EXCLUSION | DENIGRATION
 model Scenario {
-  id          String       @id @default(cuid())
-  name        String
-  description String
-  type        String       // FLAMING, SOCIAL_EXCLUSION, DENIGRATION
-  isActive    Boolean      @default(true)
+  id              String       @id @default(cuid())
+  name            String
+  description     String
+  softName        String?
+  softDescription String?
+  type            String       // FLAMING, SOCIAL_EXCLUSION, DENIGRATION
+  isActive        Boolean      @default(true)
   messages    Message[]
   sessions    Session[]
   participants ChatParticipant[]
@@ -141,4 +143,13 @@ model Admin {
   email     String   @unique
   name      String
   createdAt DateTime @default(now())
+}
+
+// Configurações gerais do sistema (singleton)
+model AdminConfig {
+  id                        String   @id @default("default")
+  requireUserIdentification Boolean  @default(false)
+  showRoleToParticipants    Boolean  @default(false)
+  showScenarioType          Boolean  @default(false)
+  updatedAt                 DateTime @updatedAt
 }

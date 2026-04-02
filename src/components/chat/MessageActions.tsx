@@ -6,6 +6,7 @@ import {
   ShieldExclamationIcon,
   FlagIcon,
   PencilIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
 import type { ActionType } from '@/types/action';
 import { cn } from '@/lib/utils';
@@ -19,52 +20,6 @@ interface MessageActionsProps {
   className?: string;
 }
 
-interface ActionButton {
-  type: ActionType;
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  color: string;
-  hoverColor: string;
-}
-
-const actionButtons: ActionButton[] = [
-  {
-    type: 'MARK_DANGER',
-    icon: ShieldExclamationIcon,
-    label: 'Perigo',
-    color: 'text-action-danger',
-    hoverColor: 'hover:bg-red-50',
-  },
-  {
-    type: 'MARK_ATTENTION',
-    icon: FlagIcon,
-    label: 'Atenção',
-    color: 'text-action-warning',
-    hoverColor: 'hover:bg-amber-50',
-  },
-  {
-    type: 'ADD_NOTE',
-    icon: PencilIcon,
-    label: 'Nota',
-    color: 'text-action-info',
-    hoverColor: 'hover:bg-blue-50',
-  },
-  {
-    type: 'DELETE_MESSAGE',
-    icon: TrashIcon,
-    label: 'Excluir',
-    color: 'text-action-danger',
-    hoverColor: 'hover:bg-red-50',
-  },
-  {
-    type: 'WARN_MESSAGE',
-    icon: ExclamationTriangleIcon,
-    label: 'Aviso',
-    color: 'text-action-warning',
-    hoverColor: 'hover:bg-amber-50',
-  },
-];
-
 export function MessageActions({
   messageId,
   onAction,
@@ -73,7 +28,8 @@ export function MessageActions({
   appliedActions = [],
   className,
 }: MessageActionsProps) {
-  const isActionApplied = (type: ActionType) => appliedActions.includes(type);
+  const isApplied = (type: ActionType) => appliedActions.includes(type);
+  const isDeleted = isApplied('DELETE_MESSAGE');
 
   return (
     <div
@@ -83,30 +39,132 @@ export function MessageActions({
         className
       )}
     >
-      {actionButtons.map((action) => {
-        const Icon = action.icon;
-        const isApplied = isActionApplied(action.type);
+      {/* MARK_DANGER — toggle */}
+      {!isApplied('MARK_DANGER') ? (
+        <ActionBtn
+          icon={ShieldExclamationIcon}
+          label="Perigo"
+          color="text-action-danger"
+          hoverColor="hover:bg-red-50"
+          disabled={isDeleted}
+          onClick={() => onAction?.(messageId, 'MARK_DANGER')}
+          onMouseEnter={() => onHoverStart?.(messageId, 'MARK_DANGER')}
+          onMouseLeave={onHoverEnd}
+        />
+      ) : (
+        <ActionBtn
+          icon={XMarkIcon}
+          label="Rem. Perigo"
+          color="text-action-danger"
+          hoverColor="hover:bg-red-50"
+          active
+          onClick={() => onAction?.(messageId, 'MARK_DANGER')}
+        />
+      )}
 
-        return (
-          <button
-            key={action.type}
-            onClick={() => onAction?.(messageId, action.type)}
-            onMouseEnter={() => onHoverStart?.(messageId, action.type)}
-            onMouseLeave={onHoverEnd}
-            disabled={isApplied}
-            className={cn(
-              'flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors',
-              action.hoverColor,
-              action.color,
-              isApplied && 'opacity-50 cursor-not-allowed'
-            )}
-            title={action.label}
-          >
-            <Icon className="h-4 w-4" />
-            <span className="hidden sm:inline">{action.label}</span>
-          </button>
-        );
-      })}
+      {/* MARK_ATTENTION — toggle */}
+      {!isApplied('MARK_ATTENTION') ? (
+        <ActionBtn
+          icon={FlagIcon}
+          label="Atenção"
+          color="text-action-warning"
+          hoverColor="hover:bg-amber-50"
+          disabled={isDeleted}
+          onClick={() => onAction?.(messageId, 'MARK_ATTENTION')}
+          onMouseEnter={() => onHoverStart?.(messageId, 'MARK_ATTENTION')}
+          onMouseLeave={onHoverEnd}
+        />
+      ) : (
+        <ActionBtn
+          icon={XMarkIcon}
+          label="Rem. Atenção"
+          color="text-action-warning"
+          hoverColor="hover:bg-amber-50"
+          active
+          onClick={() => onAction?.(messageId, 'MARK_ATTENTION')}
+        />
+      )}
+
+      {/* ADD_NOTE — toggle */}
+      {!isApplied('ADD_NOTE') ? (
+        <ActionBtn
+          icon={PencilIcon}
+          label="Nota"
+          color="text-action-info"
+          hoverColor="hover:bg-blue-50"
+          disabled={isDeleted}
+          onClick={() => onAction?.(messageId, 'ADD_NOTE')}
+          onMouseEnter={() => onHoverStart?.(messageId, 'ADD_NOTE')}
+          onMouseLeave={onHoverEnd}
+        />
+      ) : (
+        <ActionBtn
+          icon={XMarkIcon}
+          label="Rem. Nota"
+          color="text-action-info"
+          hoverColor="hover:bg-blue-50"
+          active
+          onClick={() => onAction?.(messageId, 'ADD_NOTE')}
+        />
+      )}
+
+      {/* DELETE_MESSAGE — irreversível (use undo) */}
+      <ActionBtn
+        icon={TrashIcon}
+        label="Excluir"
+        color="text-action-danger"
+        hoverColor="hover:bg-red-50"
+        disabled={isDeleted}
+        onClick={() => onAction?.(messageId, 'DELETE_MESSAGE')}
+        onMouseEnter={() => onHoverStart?.(messageId, 'DELETE_MESSAGE')}
+        onMouseLeave={onHoverEnd}
+      />
+
+      {/* WARN_MESSAGE */}
+      <ActionBtn
+        icon={ExclamationTriangleIcon}
+        label="Aviso"
+        color="text-action-warning"
+        hoverColor="hover:bg-amber-50"
+        disabled={isApplied('WARN_MESSAGE') || isDeleted}
+        onClick={() => onAction?.(messageId, 'WARN_MESSAGE')}
+        onMouseEnter={() => onHoverStart?.(messageId, 'WARN_MESSAGE')}
+        onMouseLeave={onHoverEnd}
+      />
     </div>
+  );
+}
+
+interface ActionBtnProps {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  color: string;
+  hoverColor: string;
+  disabled?: boolean;
+  active?: boolean;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}
+
+function ActionBtn({ icon: Icon, label, color, hoverColor, disabled, active, onClick, onMouseEnter, onMouseLeave }: ActionBtnProps) {
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      disabled={disabled}
+      className={cn(
+        'flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors',
+        hoverColor,
+        color,
+        active && 'bg-gray-100 ring-1 ring-inset ring-gray-200',
+        disabled && 'opacity-40 cursor-not-allowed'
+      )}
+      title={label}
+    >
+      <Icon className="h-4 w-4" />
+      <span className="hidden sm:inline">{label}</span>
+    </button>
   );
 }
