@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "build:railway": "prisma generate && prisma migrate deploy && npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts && next build",
+    "build:railway": "prisma generate && prisma migrate deploy && npx tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
@@ -60,10 +60,11 @@
     "postcss": "^8.4.41",
     "prisma": "^5.18.0",
     "tailwindcss": "^3.4.9",
+    "tsx": "^4.21.0",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
   },
   "prisma": {
-    "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "npx tsx prisma/seed.ts"
   }
 }
