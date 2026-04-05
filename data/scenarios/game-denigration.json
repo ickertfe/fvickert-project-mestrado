@@ -1,0 +1,138 @@
+{
+  "id": "game-denigration-01",
+  "name": "Cheater no Server",
+  "description": "Um jogador acusa outro de usar hacks sem provas, espalhando a rumor pelo servidor e manchando sua reputação.",
+  "softName": "Rumores no Servidor de Jogo",
+  "softDescription": "Situação de difamação e boatos sobre o comportamento de um jogador.",
+  "type": "DENIGRATION",
+  "participants": [
+    {
+      "id": "gdenigr-part-1",
+      "name": "BanditSniper",
+      "avatar": null,
+      "role": "AGGRESSOR"
+    },
+    {
+      "id": "gdenigr-part-2",
+      "name": "FastReflexBR",
+      "avatar": null,
+      "role": "VICTIM"
+    },
+    {
+      "id": "gdenigr-part-3",
+      "name": "Spectator_X",
+      "avatar": null,
+      "role": "NEUTRAL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "gdenigr-msg-1",
+      "participantId": "gdenigr-part-1",
+      "content": "ei gente, cuidado com o FastReflexBR, ele usa aimbot",
+      "type": "TEXT",
+      "appearDelay": 0,
+      "typingDuration": 2500,
+      "order": 1
+    },
+    {
+      "id": "gdenigr-msg-2",
+      "participantId": "gdenigr-part-3",
+      "content": "sério? como você sabe?",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 1500,
+      "order": 2
+    },
+    {
+      "id": "gdenigr-msg-3",
+      "participantId": "gdenigr-part-1",
+      "content": "headshot em todo mundo, 97% de precisão. claramente hack",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 3
+    },
+    {
+      "id": "gdenigr-msg-4",
+      "participantId": "gdenigr-part-2",
+      "content": "que isso cara, treino faz 3 anos todo dia",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 4
+    },
+    {
+      "id": "gdenigr-msg-5",
+      "participantId": "gdenigr-part-1",
+      "content": "3 anos kkk ninguém fica assim sem hack, pode parar",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2200,
+      "order": 5
+    },
+    {
+      "id": "gdenigr-msg-6",
+      "participantId": "gdenigr-part-2",
+      "content": "tenho 2000 horas no jogo, é dedicação, não hack",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 6
+    },
+    {
+      "id": "gdenigr-msg-7",
+      "participantId": "gdenigr-part-1",
+      "content": "já fiz report, vai tomar ban essa semana",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1800,
+      "order": 7
+    },
+    {
+      "id": "gdenigr-msg-8",
+      "participantId": "gdenigr-part-3",
+      "content": "hmm, sendo honesto parece suspeito sim...",
+      "type": "TEXT",
+      "appearDelay": 4500,
+      "typingDuration": 2000,
+      "order": 8
+    },
+    {
+      "id": "gdenigr-msg-9",
+      "participantId": "gdenigr-part-2",
+      "content": "tenho todas as minhas partidas gravadas, posso mostrar pra qualquer um",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2500,
+      "order": 9
+    },
+    {
+      "id": "gdenigr-msg-10",
+      "participantId": "gdenigr-part-1",
+      "content": "hacker sempre fala isso kkk tô avisando o server inteiro agora",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 10
+    },
+    {
+      "id": "gdenigr-msg-11",
+      "participantId": "gdenigr-part-3",
+      "content": "melhor não jogar com ele por enquanto...",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 11
+    },
+    {
+      "id": "gdenigr-msg-12",
+      "participantId": "gdenigr-part-2",
+      "content": "isso não é justo. não fiz absolutamente nada de errado",
+      "type": "TEXT",
+      "appearDelay": 5000,
+      "typingDuration": 2200,
+      "order": 12
+    }
+  ]
+}

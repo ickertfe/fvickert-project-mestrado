@@ -1,0 +1,138 @@
+{
+  "id": "game-exclusion-01",
+  "name": "Sem Vaga no Time",
+  "description": "Um jogador é recusado e ignorado pelo grupo na formação do time, sendo excluído por seu rank.",
+  "softName": "Formação de Equipe no Lobby",
+  "softDescription": "Situação de exclusão durante a formação de um grupo em jogo online.",
+  "type": "SOCIAL_EXCLUSION",
+  "participants": [
+    {
+      "id": "gexcl-part-1",
+      "name": "AlphaLeader",
+      "avatar": null,
+      "role": "AGGRESSOR"
+    },
+    {
+      "id": "gexcl-part-2",
+      "name": "NewPlayer_07",
+      "avatar": null,
+      "role": "VICTIM"
+    },
+    {
+      "id": "gexcl-part-3",
+      "name": "MidRanker",
+      "avatar": null,
+      "role": "NEUTRAL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "gexcl-msg-1",
+      "participantId": "gexcl-part-1",
+      "content": "juntando time pra ranked, alguém topa? só plat+",
+      "type": "TEXT",
+      "appearDelay": 0,
+      "typingDuration": 2000,
+      "order": 1
+    },
+    {
+      "id": "gexcl-msg-2",
+      "participantId": "gexcl-part-3",
+      "content": "eu topo, main suporte aqui",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 1500,
+      "order": 2
+    },
+    {
+      "id": "gexcl-msg-3",
+      "participantId": "gexcl-part-2",
+      "content": "posso entrar? main ADC, jogo bem",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1800,
+      "order": 3
+    },
+    {
+      "id": "gexcl-msg-4",
+      "participantId": "gexcl-part-1",
+      "content": "qual seu rank atual?",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1200,
+      "order": 4
+    },
+    {
+      "id": "gexcl-msg-5",
+      "participantId": "gexcl-part-2",
+      "content": "bronze 2 mas tô evoluindo rápido, dá uma chance",
+      "type": "TEXT",
+      "appearDelay": 3500,
+      "typingDuration": 2000,
+      "order": 5
+    },
+    {
+      "id": "gexcl-msg-6",
+      "participantId": "gexcl-part-1",
+      "content": "kkkkk bronze? não, obrigado. time fechado",
+      "type": "TEXT",
+      "appearDelay": 2500,
+      "typingDuration": 1800,
+      "order": 6
+    },
+    {
+      "id": "gexcl-msg-7",
+      "participantId": "gexcl-part-2",
+      "content": "mas eu jogo bem de verdade, só tô começando no rank",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2200,
+      "order": 7
+    },
+    {
+      "id": "gexcl-msg-8",
+      "participantId": "gexcl-part-1",
+      "content": "não nos interessa. bronze só vai atrapalhar",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1800,
+      "order": 8
+    },
+    {
+      "id": "gexcl-msg-9",
+      "participantId": "gexcl-part-3",
+      "content": "não tem mais ninguém no lobby, ele poderia jogar...",
+      "type": "TEXT",
+      "appearDelay": 4500,
+      "typingDuration": 2000,
+      "order": 9
+    },
+    {
+      "id": "gexcl-msg-10",
+      "participantId": "gexcl-part-1",
+      "content": "prefiro jogar 4x5 do que jogar com bronze. ignora ele",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 10
+    },
+    {
+      "id": "gexcl-msg-11",
+      "participantId": "gexcl-part-2",
+      "content": "tá bom... sem problemas",
+      "type": "TEXT",
+      "appearDelay": 5000,
+      "typingDuration": 1800,
+      "order": 11
+    },
+    {
+      "id": "gexcl-msg-12",
+      "participantId": "gexcl-part-1",
+      "content": "@MidRanker vamo chamar o GodSniper, esquece esse aí",
+      "type": "TEXT",
+      "appearDelay": 3500,
+      "typingDuration": 2200,
+      "order": 12
+    }
+  ]
+}

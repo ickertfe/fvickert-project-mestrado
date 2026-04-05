@@ -2,6 +2,9 @@ import { PrismaClient } from '@prisma/client';
 import flamingScenario from '../data/scenarios/flaming.json';
 import socialExclusionScenario from '../data/scenarios/social-exclusion.json';
 import denigrationScenario from '../data/scenarios/denigration.json';
+import gameFlamingScenario from '../data/scenarios/game-flaming.json';
+import gameSocialExclusionScenario from '../data/scenarios/game-social-exclusion.json';
+import gameDenigrationScenario from '../data/scenarios/game-denigration.json';
 
 const prisma = new PrismaClient();
 
@@ -191,6 +194,11 @@ async function main() {
   await seedScenario(flamingScenario as ScenarioData);
   await seedScenario(socialExclusionScenario as ScenarioData);
   await seedScenario(denigrationScenario as ScenarioData);
+
+  // Seed game lobby scenarios
+  await seedScenario(gameFlamingScenario as ScenarioData);
+  await seedScenario(gameSocialExclusionScenario as ScenarioData);
+  await seedScenario(gameDenigrationScenario as ScenarioData);
 
   // Seed bystander questions
   await seedBystanderQuestions();

@@ -1,0 +1,138 @@
+{
+  "id": "game-flaming-01",
+  "name": "Flame War no Lobby",
+  "description": "Conflito tóxico após uma derrota em partida ranqueada. Um jogador culpa e humilha outro no lobby de espera.",
+  "softName": "Conflito no Lobby de Espera",
+  "softDescription": "Situação de conflito entre jogadores em um lobby de jogo online.",
+  "type": "FLAMING",
+  "participants": [
+    {
+      "id": "gflame-part-1",
+      "name": "xKiller_99",
+      "avatar": null,
+      "role": "AGGRESSOR"
+    },
+    {
+      "id": "gflame-part-2",
+      "name": "ProGamer_BR",
+      "avatar": null,
+      "role": "VICTIM"
+    },
+    {
+      "id": "gflame-part-3",
+      "name": "SilentWolf",
+      "avatar": null,
+      "role": "NEUTRAL"
+    }
+  ],
+  "messages": [
+    {
+      "id": "gflame-msg-1",
+      "participantId": "gflame-part-1",
+      "content": "gg ez, graças a esse noob aí perdemos o ranked",
+      "type": "TEXT",
+      "appearDelay": 0,
+      "typingDuration": 1500,
+      "order": 1
+    },
+    {
+      "id": "gflame-msg-2",
+      "participantId": "gflame-part-2",
+      "content": "cara, não fui só eu que jogou mal",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 2
+    },
+    {
+      "id": "gflame-msg-3",
+      "participantId": "gflame-part-1",
+      "content": "1/12 de KDA e ainda quer falar?? vai jogar Minecraft, noob",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 3
+    },
+    {
+      "id": "gflame-msg-4",
+      "participantId": "gflame-part-2",
+      "content": "minha internet caiu no começo, relaxa",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 4
+    },
+    {
+      "id": "gflame-msg-5",
+      "participantId": "gflame-part-1",
+      "content": "desculpa de noob. sai do jogo de vez, você nunca vai prestar",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 5
+    },
+    {
+      "id": "gflame-msg-6",
+      "participantId": "gflame-part-3",
+      "content": "ei, calma aí cara",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 1500,
+      "order": 6
+    },
+    {
+      "id": "gflame-msg-7",
+      "participantId": "gflame-part-1",
+      "content": "fica quieto, você também jogou horrível",
+      "type": "TEXT",
+      "appearDelay": 2500,
+      "typingDuration": 2000,
+      "order": 7
+    },
+    {
+      "id": "gflame-msg-8",
+      "participantId": "gflame-part-2",
+      "content": "cara, é só um jogo...",
+      "type": "TEXT",
+      "appearDelay": 4500,
+      "typingDuration": 1500,
+      "order": 8
+    },
+    {
+      "id": "gflame-msg-9",
+      "participantId": "gflame-part-1",
+      "content": "pra você é jogo, pra gente é ranking. para de queimar nosso elo, lixo",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2500,
+      "order": 9
+    },
+    {
+      "id": "gflame-msg-10",
+      "participantId": "gflame-part-3",
+      "content": "isso tá passando dos limites",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 1800,
+      "order": 10
+    },
+    {
+      "id": "gflame-msg-11",
+      "participantId": "gflame-part-1",
+      "content": "vou te reportar por grief e você vai tomar ban, inútil",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2200,
+      "order": 11
+    },
+    {
+      "id": "gflame-msg-12",
+      "participantId": "gflame-part-2",
+      "content": "não fiz nada de errado...",
+      "type": "TEXT",
+      "appearDelay": 5000,
+      "typingDuration": 1800,
+      "order": 12
+    }
+  ]
+}
