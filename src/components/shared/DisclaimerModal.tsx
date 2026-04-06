@@ -10,12 +10,14 @@ interface DisclaimerModalProps {
   isOpen: boolean;
   onAccept: () => void;
   onDecline: () => void;
+  showIdentification?: boolean;
 }
 
 export function DisclaimerModal({
   isOpen,
   onAccept,
   onDecline,
+  showIdentification = true,
 }: DisclaimerModalProps) {
   const [accepted, setAccepted] = useState(false);
 
@@ -53,7 +55,9 @@ export function DisclaimerModal({
           <h3>3. Procedimentos da Participação</h3>
           <p>Ao participar desta pesquisa, você irá:</p>
           <ul>
-            <li>Fornecer informações básicas (nome e email) para identificação da sessão</li>
+            {showIdentification && (
+              <li>Fornecer informações básicas (nome e email) para identificação da sessão</li>
+            )}
             <li>Observar uma simulação de chat contendo diálogos fictícios</li>
             <li>Interagir com o sistema de acordo com seu papel atribuído</li>
           </ul>
@@ -76,7 +80,9 @@ export function DisclaimerModal({
 
           <h3>5. Confidencialidade e Anonimato</h3>
           <ul>
-            <li>Seus dados pessoais serão utilizados apenas para controle interno</li>
+            {showIdentification && (
+              <li>Seus dados pessoais serão utilizados apenas para controle interno</li>
+            )}
             <li>Os resultados serão apresentados de forma agregada e anônima</li>
             <li>Nenhuma informação que permita sua identificação será divulgada</li>
           </ul>

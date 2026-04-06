@@ -328,6 +328,7 @@ export default function GameLobbyLanding() {
           isOpen={true}
           onAccept={handleAccept}
           onDecline={() => setStep('scenario')}
+          showIdentification={requireId}
         />
         {isLoading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>

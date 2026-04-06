@@ -189,56 +189,150 @@ export default function GameLobbyPage() {
 
   // ── Pre-start ──────────────────────────────────────────────────────────────
   if (!hasStarted) {
+    const tutorActions = [
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        ),
+        label: 'Excluir mensagem',
+        desc: 'Remove uma mensagem do chat',
+        color: '#fca5a5',
+        bg: 'rgba(220,38,38,0.12)',
+        border: 'rgba(220,38,38,0.25)',
+      },
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        ),
+        label: 'Avisar jogador',
+        desc: 'Marca a mensagem com aviso',
+        color: '#fcd34d',
+        bg: 'rgba(217,119,6,0.12)',
+        border: 'rgba(217,119,6,0.25)',
+      },
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        ),
+        label: 'Adicionar nota',
+        desc: 'Registra uma observação',
+        color: '#93c5fd',
+        bg: 'rgba(59,130,246,0.12)',
+        border: 'rgba(59,130,246,0.25)',
+      },
+    ];
+
+    const bystanderActions = [
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        ),
+        label: 'Observar o lobby',
+        desc: 'Acompanhe as mensagens em tempo real',
+        color: '#93c5fd',
+        bg: 'rgba(59,130,246,0.12)',
+        border: 'rgba(59,130,246,0.25)',
+      },
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+        ),
+        label: 'Responder questionário',
+        desc: 'Ao final, avalie o que observou',
+        color: '#a78bfa',
+        bg: 'rgba(139,92,246,0.12)',
+        border: 'rgba(139,92,246,0.25)',
+      },
+    ];
+
+    const actions = isTutor ? tutorActions : bystanderActions;
+    const roleColor = isTutor ? 'rgba(167,139,250,1)' : '#60a5fa';
+    const roleBg = isTutor ? 'rgba(139,92,246,0.15)' : 'rgba(59,130,246,0.15)';
+    const roleBorder = isTutor ? 'rgba(139,92,246,0.35)' : 'rgba(59,130,246,0.35)';
+
     return (
       <DarkScreen>
         <div
-          className="max-w-md w-full rounded-xl p-8 text-center"
-          style={{ backgroundColor: 'rgba(15,15,25,0.9)', border: '1px solid rgba(139,92,246,0.25)' }}
+          className="max-w-lg w-full rounded-2xl overflow-hidden"
+          style={{ backgroundColor: 'rgba(15,15,28,0.92)', border: `1px solid ${roleBorder}` }}
         >
-          {/* Game icon */}
-          <div
-            className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl"
-            style={{ backgroundColor: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)' }}
-          >
-            <svg className="h-10 w-10 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-            </svg>
+          {/* Role header */}
+          <div className="px-8 pt-8 pb-5 text-center" style={{ borderBottom: `1px solid ${roleBorder}` }}>
+            <div
+              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: roleBg, border: `1px solid ${roleBorder}` }}
+            >
+              {isTutor ? (
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: roleColor }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              ) : (
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: roleColor }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              )}
+            </div>
+            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: roleColor }}>
+              Você é o {isTutor ? 'Moderador' : 'Observador'}
+            </p>
+            <h1 className="text-xl font-black text-white">
+              {sessionData!.scenario.softName ?? sessionData!.scenario.name}
+            </h1>
           </div>
 
-          <div
-            className="inline-block mb-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest"
-            style={{ backgroundColor: 'rgba(139,92,246,0.15)', color: 'rgba(167,139,250,0.8)', border: '1px solid rgba(139,92,246,0.2)' }}
-          >
-            {isTutor ? 'Moderador' : 'Observador'}
+          {/* Actions */}
+          <div className="px-8 py-5">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-gray-500 mb-3">
+              {isTutor ? 'Ações disponíveis' : 'O que você vai fazer'}
+            </p>
+            <div className="space-y-2">
+              {actions.map((a) => (
+                <div
+                  key={a.label}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3"
+                  style={{ backgroundColor: a.bg, border: `1px solid ${a.border}` }}
+                >
+                  <div className="shrink-0" style={{ color: a.color }}>{a.icon}</div>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: a.color }}>{a.label}</p>
+                    <p className="text-xs text-gray-500">{a.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-2">
-            {sessionData!.scenario.softName ?? sessionData!.scenario.name}
-          </h1>
-          <p className="text-sm text-gray-400 mb-6">
-            {isTutor
-              ? 'Você irá moderar um lobby de jogo. Monitore as mensagens e intervenha quando necessário usando as ações disponíveis.'
-              : 'Você irá observar um lobby de jogo. Acompanhe a conversa e responda um questionário ao final.'}
-          </p>
-
-          <div className="space-y-3">
+          {/* Buttons */}
+          <div className="px-8 pb-8 space-y-2">
             <button
               onClick={handleStart}
-              className="w-full py-3 rounded-lg text-sm font-bold transition-all"
+              className="w-full py-3 rounded-xl text-sm font-bold transition-all"
               style={{
-                background: 'linear-gradient(135deg, rgba(139,92,246,0.4) 0%, rgba(99,102,241,0.4) 100%)',
-                color: '#c4b5fd',
-                border: '1px solid rgba(139,92,246,0.5)',
+                background: `linear-gradient(135deg, ${roleBg} 0%, ${roleBorder} 100%)`,
+                color: roleColor,
+                border: `1px solid ${roleBorder}`,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              Entrar no Lobby
+              Entrar no Lobby →
             </button>
             <button
               onClick={() => router.push('/game-lobby')}
-              className="w-full py-2 rounded-lg text-sm transition-colors"
-              style={{ color: 'rgba(156,163,175,0.6)' }}
+              className="w-full py-2 rounded-xl text-xs transition-colors"
+              style={{ color: 'rgba(107,114,128,0.7)' }}
             >
               Cancelar
             </button>
