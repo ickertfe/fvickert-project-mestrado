@@ -18,7 +18,7 @@ interface ScenarioData {
   participants: Array<{
     id: string;
     name: string;
-    avatar?: string;
+    avatar?: string | null;
     role: 'AGGRESSOR' | 'VICTIM' | 'NEUTRAL';
   }>;
   messages: Array<{
