@@ -192,6 +192,7 @@ export default function BystanderPage() {
             isOpen={true}
             onAccept={handleAcceptDisclaimer}
             onDecline={handleDeclineDisclaimer}
+            showIdentification={requireIdentification ?? false}
           />
         )}
 

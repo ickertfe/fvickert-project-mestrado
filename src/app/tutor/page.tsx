@@ -193,6 +193,7 @@ export default function TutorPage() {
             isOpen={true}
             onAccept={handleAcceptDisclaimer}
             onDecline={handleDeclineDisclaimer}
+            showIdentification={requireIdentification ?? false}
           />
         )}
 

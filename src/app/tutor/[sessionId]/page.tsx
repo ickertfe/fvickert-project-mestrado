@@ -141,26 +141,85 @@ export default function TutorSessionPage() {
 
   // ── Pre-start screen ─────────────────────────────────────────────────────
   if (!hasStarted) {
+    const tutorActions = [
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        ),
+        label: 'Excluir mensagem',
+        desc: 'Remove uma mensagem inadequada do chat',
+        colorClass: 'text-red-600',
+        bgClass: 'bg-red-50 border-red-200',
+      },
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        ),
+        label: 'Avisar participante',
+        desc: 'Marca a mensagem com um aviso',
+        colorClass: 'text-amber-600',
+        bgClass: 'bg-amber-50 border-amber-200',
+      },
+      {
+        icon: (
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        ),
+        label: 'Adicionar nota',
+        desc: 'Registra uma observação sobre a sessão',
+        colorClass: 'text-blue-600',
+        bgClass: 'bg-blue-50 border-blue-200',
+      },
+    ];
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <Card className="max-w-md text-center">
-          <div className="p-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-chat-header/10">
-              <svg className="h-8 w-8 text-chat-header" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="max-w-lg w-full rounded-2xl overflow-hidden bg-white shadow-lg border border-violet-200">
+          {/* Role header */}
+          <div className="px-8 pt-8 pb-5 text-center border-b border-violet-100">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-100 border border-violet-200">
+              <svg className="h-8 w-8 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Pronto para começar?</h1>
-            <p className="mt-2 text-gray-600">
-              Você irá observar uma simulação de conversa em grupo. Como tutor, você pode executar ações de moderação clicando nas mensagens.
+            <p className="text-xs font-bold uppercase tracking-widest text-violet-600 mb-1">Você é o Tutor</p>
+            <h1 className="text-xl font-black text-gray-900">{groupName}</h1>
+          </div>
+
+          {/* Role description */}
+          <div className="px-8 pt-5 pb-1">
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Como <strong>Tutor</strong>, você irá observar uma simulação de conversa e poderá moderar o conteúdo clicando nas mensagens. Sua função é identificar comportamentos inadequados e agir conforme necessário.
             </p>
-            <div className="mt-6 space-y-3">
-              <Button onClick={handleStart} className="w-full">Iniciar Simulação</Button>
-              <Button variant="ghost" onClick={() => router.push('/')} className="w-full">Cancelar</Button>
+          </div>
+
+          {/* Actions */}
+          <div className="px-8 py-5">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">Ações disponíveis</p>
+            <div className="space-y-2">
+              {tutorActions.map((a) => (
+                <div key={a.label} className={`flex items-center gap-3 rounded-xl px-4 py-3 border ${a.bgClass}`}>
+                  <div className={`shrink-0 ${a.colorClass}`}>{a.icon}</div>
+                  <div>
+                    <p className={`text-sm font-semibold ${a.colorClass}`}>{a.label}</p>
+                    <p className="text-xs text-gray-500">{a.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </Card>
+
+          {/* Buttons */}
+          <div className="px-8 pb-8 space-y-2">
+            <Button onClick={handleStart} className="w-full">Iniciar Simulação →</Button>
+            <Button variant="ghost" onClick={() => router.push('/')} className="w-full text-gray-400">Cancelar</Button>
+          </div>
+        </div>
       </div>
     );
   }
