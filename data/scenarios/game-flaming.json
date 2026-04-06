@@ -107,32 +107,5 @@
       "typingDuration": 2500,
       "order": 9
     },
-    {
-      "id": "gflame-msg-10",
-      "participantId": "gflame-part-3",
-      "content": "isso tá passando dos limites",
-      "type": "TEXT",
-      "appearDelay": 4000,
-      "typingDuration": 1800,
-      "order": 10
-    },
-    {
-      "id": "gflame-msg-11",
-      "participantId": "gflame-part-1",
-      "content": "vou te reportar por grief e você vai tomar ban, inútil",
-      "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 2200,
-      "order": 11
-    },
-    {
-      "id": "gflame-msg-12",
-      "participantId": "gflame-part-2",
-      "content": "não fiz nada de errado...",
-      "type": "TEXT",
-      "appearDelay": 5000,
-      "typingDuration": 1800,
-      "order": 12
-    }
   ]
 }

@@ -107,32 +107,5 @@
       "typingDuration": 2000,
       "order": 9
     },
-    {
-      "id": "gexcl-msg-10",
-      "participantId": "gexcl-part-1",
-      "content": "prefiro jogar 4x5 do que jogar com bronze. ignora ele",
-      "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 2500,
-      "order": 10
-    },
-    {
-      "id": "gexcl-msg-11",
-      "participantId": "gexcl-part-2",
-      "content": "tá bom... sem problemas",
-      "type": "TEXT",
-      "appearDelay": 5000,
-      "typingDuration": 1800,
-      "order": 11
-    },
-    {
-      "id": "gexcl-msg-12",
-      "participantId": "gexcl-part-1",
-      "content": "@MidRanker vamo chamar o GodSniper, esquece esse aí",
-      "type": "TEXT",
-      "appearDelay": 3500,
-      "typingDuration": 2200,
-      "order": 12
-    }
   ]
 }

@@ -6,6 +6,7 @@ import type { ActionType } from '@/types/action';
 interface SpeechBubbleProps {
   content: string;
   messageId: string;
+  isTyping: boolean;
   isDeleted: boolean;
   hasWarning: boolean;
   canTakeActions: boolean;
@@ -14,9 +15,34 @@ interface SpeechBubbleProps {
   onHoverEnd?: (messageId: string) => void;
 }
 
+// Animated typing dots
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-[3px]">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="inline-block w-1.5 h-1.5 rounded-full bg-gray-400"
+          style={{
+            animation: `typing-dot 1.2s ease-in-out infinite`,
+            animationDelay: `${i * 0.2}s`,
+          }}
+        />
+      ))}
+      <style>{`
+        @keyframes typing-dot {
+          0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+          40% { opacity: 1; transform: scale(1.1); }
+        }
+      `}</style>
+    </span>
+  );
+}
+
 export function SpeechBubble({
   content,
   messageId,
+  isTyping,
   isDeleted,
   hasWarning,
   canTakeActions,
@@ -27,63 +53,87 @@ export function SpeechBubble({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Fade in on mount and whenever content changes
     setVisible(false);
-    const t = setTimeout(() => setVisible(true), 50);
+    const t = setTimeout(() => setVisible(true), 40);
     return () => clearTimeout(t);
-  }, [content]);
+  }, [content, isTyping]);
 
   if (isDeleted) return null;
 
+  const borderColor = hasWarning
+    ? 'rgba(217,119,6,0.55)'
+    : isTyping
+    ? 'rgba(99,102,241,0.35)'
+    : 'rgba(139,92,246,0.4)';
+
+  const bgColor = hasWarning
+    ? 'rgba(217,119,6,0.12)'
+    : 'rgba(10,10,18,0.93)';
+
+  const arrowColor = hasWarning
+    ? 'rgba(217,119,6,0.55)'
+    : isTyping
+    ? 'rgba(99,102,241,0.35)'
+    : 'rgba(139,92,246,0.4)';
+
   return (
     <div
-      className="absolute bottom-full left-1/2 mb-2 w-max max-w-[180px]"
-      style={{ transform: 'translateX(-50%)', zIndex: 20 }}
-      onMouseEnter={() => onHoverStart?.(messageId)}
-      onMouseLeave={() => onHoverEnd?.(messageId)}
+      className="absolute bottom-full left-1/2 mb-2 w-max max-w-[200px]"
+      style={{ transform: 'translateX(-50%)', zIndex: 50 }}
+      onMouseEnter={() => !isTyping && onHoverStart?.(messageId)}
+      onMouseLeave={() => !isTyping && onHoverEnd?.(messageId)}
     >
-      {/* Bubble */}
       <div
-        className="relative rounded-xl px-3 py-2 text-xs leading-snug shadow-lg transition-all duration-300"
+        className="relative rounded-xl px-3 py-2 text-xs leading-snug shadow-xl transition-all duration-200"
         style={{
-          backgroundColor: hasWarning ? 'rgba(217,119,6,0.15)' : 'rgba(15,15,20,0.92)',
-          border: hasWarning ? '1px solid rgba(217,119,6,0.5)' : '1px solid rgba(139,92,246,0.3)',
+          backgroundColor: bgColor,
+          border: `1px solid ${borderColor}`,
           color: hasWarning ? '#fcd34d' : '#e5e7eb',
-          backdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(10px)',
           opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0) scale(1)' : 'translateY(6px) scale(0.95)',
+          transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.92)',
+          minWidth: 60,
         }}
       >
-        <span className="block break-words">{content}</span>
+        {/* Content or typing dots */}
+        {isTyping ? (
+          <div className="flex items-center justify-center py-0.5">
+            <TypingDots />
+          </div>
+        ) : (
+          <span className="block break-words">{content}</span>
+        )}
 
-        {/* Tutor action buttons */}
-        {canTakeActions && !hasWarning && onAction && (
-          <div className="flex gap-1 mt-1.5 pt-1.5 border-t border-white/10">
+        {/* Tutor action buttons — only on real messages (not typing), not already warned */}
+        {canTakeActions && !isTyping && !hasWarning && onAction && (
+          <div className="flex gap-1 mt-1.5 pt-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <button
-              onClick={() => onAction(messageId, 'DELETE_MESSAGE')}
-              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+              onClick={(e) => { e.stopPropagation(); onAction(messageId, 'DELETE_MESSAGE'); }}
+              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors"
               style={{ backgroundColor: 'rgba(220,38,38,0.2)', color: '#fca5a5' }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(220,38,38,0.4)')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(220,38,38,0.2)')}
             >
-              Excluir
+              ✕ Excluir
             </button>
             <button
-              onClick={() => onAction(messageId, 'WARN_MESSAGE')}
-              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+              onClick={(e) => { e.stopPropagation(); onAction(messageId, 'WARN_MESSAGE'); }}
+              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors"
               style={{ backgroundColor: 'rgba(217,119,6,0.2)', color: '#fcd34d' }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(217,119,6,0.4)')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(217,119,6,0.2)')}
             >
-              Avisar
+              ⚠ Avisar
             </button>
           </div>
         )}
 
-        {hasWarning && (
-          <div className="mt-1 text-[10px] text-amber-400/70">⚠ mensagem avisada</div>
+        {hasWarning && !isTyping && (
+          <div className="mt-1 text-[10px] text-amber-400/60">⚠ mensagem avisada</div>
         )}
 
-        {/* Arrow */}
+        {/* Arrow pointing down to avatar */}
         <div
           className="absolute top-full left-1/2 -translate-x-1/2"
           style={{
@@ -91,7 +141,7 @@ export function SpeechBubble({
             height: 0,
             borderLeft: '6px solid transparent',
             borderRight: '6px solid transparent',
-            borderTop: hasWarning ? '7px solid rgba(217,119,6,0.5)' : '7px solid rgba(139,92,246,0.3)',
+            borderTop: `7px solid ${arrowColor}`,
           }}
         />
       </div>

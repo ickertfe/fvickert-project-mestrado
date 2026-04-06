@@ -77,6 +77,12 @@ async function seedScenario(scenarioData: ScenarioData) {
     });
   }
 
+  // Remove messages no longer in the scenario (e.g. after trimming)
+  const incomingIds = scenarioData.messages.map((m) => m.id);
+  await prisma.message.deleteMany({
+    where: { scenarioId: scenario.id, id: { notIn: incomingIds } },
+  });
+
   // Create messages
   for (const message of scenarioData.messages) {
     await prisma.message.upsert({

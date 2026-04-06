@@ -149,8 +149,8 @@ export function useChat({
     isComplete: timeline.isComplete,
     typingParticipant,
 
-    // Static state
-    canTakeActions: chatState.canTakeActions,
+    // Static state — derive canTakeActions from current role (not initial render)
+    canTakeActions: role === 'TUTOR',
     participants: chatState.participants,
 
     stats: metrics.getStats(),

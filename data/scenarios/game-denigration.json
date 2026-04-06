@@ -107,32 +107,5 @@
       "typingDuration": 2500,
       "order": 9
     },
-    {
-      "id": "gdenigr-msg-10",
-      "participantId": "gdenigr-part-1",
-      "content": "hacker sempre fala isso kkk tô avisando o server inteiro agora",
-      "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 2500,
-      "order": 10
-    },
-    {
-      "id": "gdenigr-msg-11",
-      "participantId": "gdenigr-part-3",
-      "content": "melhor não jogar com ele por enquanto...",
-      "type": "TEXT",
-      "appearDelay": 4000,
-      "typingDuration": 2000,
-      "order": 11
-    },
-    {
-      "id": "gdenigr-msg-12",
-      "participantId": "gdenigr-part-2",
-      "content": "isso não é justo. não fiz absolutamente nada de errado",
-      "type": "TEXT",
-      "appearDelay": 5000,
-      "typingDuration": 2200,
-      "order": 12
-    }
   ]
 }

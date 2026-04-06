@@ -11,19 +11,22 @@ import { CloseAllSessionsButton } from './_components/CloseAllSessionsButton';
 import { ResetDatabaseButton } from './_components/ResetDatabaseButton';
 
 async function getAdminData() {
+  const notGame = { NOT: { scenario: { id: { startsWith: 'game-' } } } };
   const [totalSessions, completedSessions, openSessions, tutorSessions, bystanderSessions, scenarios, recentSessions, config] =
     await Promise.all([
-      prisma.session.count(),
-      prisma.session.count({ where: { completedAt: { not: null } } }),
-      prisma.session.count({ where: { completedAt: null } }),
-      prisma.session.count({ where: { role: 'TUTOR' } }),
-      prisma.session.count({ where: { role: 'BYSTANDER' } }),
+      prisma.session.count({ where: notGame }),
+      prisma.session.count({ where: { ...notGame, completedAt: { not: null } } }),
+      prisma.session.count({ where: { ...notGame, completedAt: null } }),
+      prisma.session.count({ where: { ...notGame, role: 'TUTOR' } }),
+      prisma.session.count({ where: { ...notGame, role: 'BYSTANDER' } }),
       prisma.scenario.findMany({
+        where: { NOT: { id: { startsWith: 'game-' } } },
         include: { _count: { select: { messages: true, participants: true, sessions: true } } },
         orderBy: { createdAt: 'desc' },
       }),
       prisma.session.findMany({
         take: 10,
+        where: { NOT: { scenario: { id: { startsWith: 'game-' } } } },
         include: { scenario: true, _count: { select: { actions: true } } },
         orderBy: { createdAt: 'desc' },
       }),

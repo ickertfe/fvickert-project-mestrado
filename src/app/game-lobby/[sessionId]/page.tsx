@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useChat } from '@/hooks/useChat';
 import { GameScene } from './GameScene';
@@ -22,12 +22,39 @@ interface SessionData {
   };
 }
 
+// ── Scales a fixed 1280×720 child to fill available container ─────────────────
+function ScaledScene({ children }: { children: React.ReactNode }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      const { width, height } = el.getBoundingClientRect();
+      setScale(Math.min(width / 1280, height / 720));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="w-full h-full flex items-center justify-center overflow-hidden">
+      <div style={{ transform: `scale(${scale})`, transformOrigin: 'center center', willChange: 'transform' }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // ── Shared dark screen wrapper ────────────────────────────────────────────────
 function DarkScreen({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="flex min-h-screen items-center justify-center p-6"
-      style={{ background: 'linear-gradient(135deg, #0b0c1a 0%, #10122a 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #131428 0%, #1d1f40 100%)' }}
     >
       {children}
     </div>
@@ -149,11 +176,11 @@ export default function GameLobbyPage() {
             <p className="font-mono text-xs text-gray-300 break-all">{sessionId}</p>
           </div>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/game-lobby')}
             className="w-full py-2.5 rounded-lg text-sm font-semibold transition-colors"
             style={{ backgroundColor: 'rgba(139,92,246,0.25)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.35)' }}
           >
-            Sair do Lobby
+            Voltar ao Lobby
           </button>
         </div>
       </DarkScreen>
@@ -209,7 +236,7 @@ export default function GameLobbyPage() {
               Entrar no Lobby
             </button>
             <button
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/game-lobby')}
               className="w-full py-2 rounded-lg text-sm transition-colors"
               style={{ color: 'rgba(156,163,175,0.6)' }}
             >
@@ -223,11 +250,11 @@ export default function GameLobbyPage() {
 
   // ── Active game lobby ──────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col h-screen" style={{ background: '#0b0c1a' }}>
+    <div className="flex flex-col h-screen" style={{ background: '#131428' }}>
       {/* Top bar */}
       <div
         className="flex items-center justify-between px-4 py-2 shrink-0"
-        style={{ backgroundColor: 'rgba(10,10,20,0.9)', borderBottom: '1px solid rgba(139,92,246,0.2)' }}
+        style={{ backgroundColor: 'rgba(18,18,38,0.88)', borderBottom: '1px solid rgba(139,92,246,0.2)' }}
       >
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
@@ -271,20 +298,23 @@ export default function GameLobbyPage() {
         </div>
       </div>
 
-      {/* Main game scene */}
-      <div className="flex-1 relative overflow-hidden">
-        <GameScene
-          participants={sessionData!.scenario.participants}
-          visibleMessages={chat.visibleMessages}
-          typingParticipantId={chat.typingParticipant?.id ?? null}
-          canTakeActions={chat.canTakeActions}
-          isTutor={isTutor}
-          canUndo={chat.canUndo}
-          onAction={chat.executeAction}
-          onUndo={chat.undoLastAction}
-          onHoverStart={(id) => chat.onMessageHoverStart(id, 'DELETE_MESSAGE')}
-          onHoverEnd={() => chat.onMessageHoverEnd()}
-        />
+      {/* Main game scene — fixed 1280×720, scaled to fit available space */}
+      <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-[#0b0c1a]">
+        <ScaledScene>
+          <GameScene
+            participants={sessionData!.scenario.participants}
+            visibleMessages={chat.visibleMessages}
+            typingParticipantId={chat.typingParticipant?.id ?? null}
+            canTakeActions={chat.canTakeActions}
+            isTutor={isTutor}
+            canUndo={chat.canUndo}
+            isComplete={chat.isComplete}
+            onAction={chat.executeAction}
+            onUndo={chat.undoLastAction}
+            onHoverStart={(id) => chat.onMessageHoverStart(id, 'DELETE_MESSAGE')}
+            onHoverEnd={() => chat.onMessageHoverEnd()}
+          />
+        </ScaledScene>
       </div>
 
       {/* Bystander questionnaire */}

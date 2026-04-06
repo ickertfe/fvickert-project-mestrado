@@ -10,12 +10,12 @@ import type { ActionType } from '@/types/action';
 // Game-style vivid colors, one per participant slot
 const SLOT_COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
 
-// Spread starting positions so avatars don't pile up
+// Spread starting positions across the walkable floor of the lobby image
 const START_POSITIONS = [
-  { x: 20, y: 55 },
-  { x: 65, y: 48 },
-  { x: 42, y: 62 },
-  { x: 80, y: 58 },
+  { x: 28, y: 52 },
+  { x: 58, y: 45 },
+  { x: 42, y: 65 },
+  { x: 72, y: 60 },
 ];
 
 interface GameSceneProps {
@@ -25,6 +25,7 @@ interface GameSceneProps {
   canTakeActions: boolean;
   isTutor: boolean;
   canUndo: boolean;
+  isComplete: boolean;
   onAction?: (messageId: string, action: ActionType) => void;
   onUndo?: () => void;
   onHoverStart?: (messageId: string) => void;
@@ -38,6 +39,7 @@ export function GameScene({
   canTakeActions,
   isTutor,
   canUndo,
+  isComplete,
   onAction,
   onUndo,
   onHoverStart,
@@ -75,101 +77,20 @@ export function GameScene({
     ?? (visibleMessages.length > 0 ? visibleMessages[visibleMessages.length - 1].participantId : null);
 
   return (
-    <div className="relative w-full h-full overflow-hidden select-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+    // Fixed 1280×720 scene — scales to fit the viewport container via CSS transform in the parent
+    <div className="relative overflow-hidden select-none" style={{ width: 1280, height: 720, fontFamily: "'Inter', sans-serif" }}>
 
-      {/* ── Background: game lobby room ─────────────────────────────── */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #0b0c1a 0%, #10122a 60%, #1a1235 100%)' }} />
-
-      {/* Starfield dots */}
-      {[...Array(40)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: Math.random() * 2 + 1,
-            height: Math.random() * 2 + 1,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 35}%`,
-            backgroundColor: 'rgba(255,255,255,0.5)',
-            opacity: Math.random() * 0.7 + 0.1,
-          }}
-        />
-      ))}
-
-      {/* Floor */}
+      {/* ── Background: game lobby image ────────────────────────────── */}
       <div
-        className="absolute bottom-0 left-0 right-0"
+        className="absolute inset-0"
         style={{
-          height: '45%',
-          background: 'linear-gradient(180deg, #1c1f3a 0%, #14162e 100%)',
-          borderTop: '2px solid rgba(139,92,246,0.25)',
+          backgroundImage: 'url(/game-lobby-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       />
-
-      {/* Floor grid lines */}
-      <svg className="absolute bottom-0 left-0 w-full" style={{ height: '45%', opacity: 0.12 }} preserveAspectRatio="none">
-        {[...Array(8)].map((_, i) => (
-          <line key={`v${i}`} x1={`${(i + 1) * 12.5}%`} y1="0" x2={`${(i + 1) * 12.5}%`} y2="100%" stroke="#8b5cf6" strokeWidth="1" />
-        ))}
-        {[...Array(4)].map((_, i) => (
-          <line key={`h${i}`} x1="0" y1={`${(i + 1) * 25}%`} x2="100%" y2={`${(i + 1) * 25}%`} stroke="#8b5cf6" strokeWidth="1" />
-        ))}
-      </svg>
-
-      {/* Lobby objects (terminals, lights) */}
-      {/* Left terminal */}
-      <div className="absolute" style={{ left: '4%', bottom: '42%' }}>
-        <div style={{ width: 36, height: 28, backgroundColor: '#1e2240', border: '1px solid rgba(139,92,246,0.4)', borderRadius: 4 }}>
-          <div style={{ margin: '4px', height: 8, backgroundColor: 'rgba(139,92,246,0.3)', borderRadius: 2 }} />
-          <div style={{ margin: '2px 4px', height: 4, backgroundColor: 'rgba(99,102,241,0.2)', borderRadius: 1 }} />
-          <div style={{ margin: '1px 4px', height: 4, backgroundColor: 'rgba(99,102,241,0.15)', borderRadius: 1 }} />
-        </div>
-        <div style={{ width: 36, height: 6, backgroundColor: '#252848', borderRadius: '0 0 3px 3px' }} />
-      </div>
-
-      {/* Right terminal */}
-      <div className="absolute" style={{ right: '5%', bottom: '42%' }}>
-        <div style={{ width: 36, height: 28, backgroundColor: '#1e2240', border: '1px solid rgba(59,130,246,0.4)', borderRadius: 4 }}>
-          <div style={{ margin: '4px', height: 8, backgroundColor: 'rgba(59,130,246,0.25)', borderRadius: 2 }} />
-          <div style={{ margin: '2px 4px', height: 4, backgroundColor: 'rgba(99,102,241,0.2)', borderRadius: 1 }} />
-        </div>
-        <div style={{ width: 36, height: 6, backgroundColor: '#252848', borderRadius: '0 0 3px 3px' }} />
-      </div>
-
-      {/* Center sign / banner */}
-      <div
-        className="absolute text-center"
-        style={{ top: '8%', left: '50%', transform: 'translateX(-50%)' }}
-      >
-        <div
-          className="px-4 py-1.5 rounded text-xs font-bold uppercase tracking-widest"
-          style={{
-            backgroundColor: 'rgba(139,92,246,0.15)',
-            border: '1px solid rgba(139,92,246,0.3)',
-            color: 'rgba(167,139,250,0.9)',
-            backdropFilter: 'blur(4px)',
-          }}
-        >
-          ◈ LOBBY — Aguardando jogadores ◈
-        </div>
-      </div>
-
-      {/* Ceiling lights */}
-      {[20, 50, 80].map((x) => (
-        <div key={x} className="absolute" style={{ left: `${x}%`, top: '14%', transform: 'translateX(-50%)' }}>
-          <div style={{ width: 6, height: 16, backgroundColor: '#2a2d50', margin: '0 auto' }} />
-          <div
-            style={{
-              width: 20,
-              height: 6,
-              borderRadius: '0 0 4px 4px',
-              backgroundColor: '#8b5cf6',
-              boxShadow: '0 0 12px 4px rgba(139,92,246,0.4)',
-              margin: '0 auto',
-            }}
-          />
-        </div>
-      ))}
+      {/* Subtle dark overlay so avatars/UI pop */}
+      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(5,5,15,0.12)' }} />
 
       {/* ── Avatars ──────────────────────────────────────────────────── */}
       {avatarConfigs.map((cfg) => (
@@ -177,33 +98,15 @@ export function GameScene({
           key={cfg.id}
           config={cfg}
           currentMessage={lastMessageByParticipant[cfg.id] ?? null}
-          isSpeaking={cfg.id === activeSpeakerId}
+          isSpeaking={cfg.id === activeSpeakerId && !typingParticipantId}
+          isTyping={cfg.id === typingParticipantId}
+          isComplete={isComplete}
           canTakeActions={canTakeActions}
           onAction={onAction}
           onHoverStart={onHoverStart}
           onHoverEnd={onHoverEnd}
         />
       ))}
-
-      {/* Typing indicator on map */}
-      {typingParticipantId && (() => {
-        const cfg = avatarConfigs.find((c) => c.id === typingParticipantId);
-        if (!cfg) return null;
-        return (
-          <div
-            className="absolute text-[10px] animate-pulse"
-            style={{
-              left: `${cfg.startX}%`,
-              top: `calc(${cfg.startY}% - 90px)`,
-              transform: 'translateX(-50%)',
-              color: cfg.color,
-              zIndex: 25,
-            }}
-          >
-            digitando...
-          </div>
-        );
-      })()}
 
       {/* ── Game Chat (bottom-left) ───────────────────────────────────── */}
       <GameChat

@@ -172,11 +172,6 @@ export default function HomePage() {
           <p className="text-sm text-gray-500">
             Pesquisa acadêmica para fins científicos.
           </p>
-          <p className="mt-2 text-sm text-gray-400">
-            <Link href="/admin" className="hover:text-chat-header">
-              Acesso Administrativo
-            </Link>
-          </p>
         </footer>
       </div>
     </div>

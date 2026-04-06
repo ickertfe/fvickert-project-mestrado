@@ -17,13 +17,33 @@ interface Avatar2DProps {
   config: AvatarConfig;
   currentMessage: DisplayMessage | null;
   isSpeaking: boolean;
+  isTyping: boolean;
+  isComplete: boolean;
   canTakeActions: boolean;
   onAction?: (messageId: string, action: ActionType) => void;
   onHoverStart?: (messageId: string) => void;
   onHoverEnd?: (messageId: string) => void;
 }
 
-function darken(hex: string, amount = 30) {
+// Tile grid — each step moves exactly one tile
+const TILE_X = 4; // % per tile horizontally
+const TILE_Y = 4; // % per tile vertically
+const STEP_MS = 160; // ms between each tile step
+const PAUSE_MIN = 800; // ms to wait at destination before next walk
+const PAUSE_MAX = 2500;
+
+function snap(val: number, tile: number) {
+  return Math.round(val / tile) * tile;
+}
+
+function randomDest() {
+  return {
+    x: snap(18 + Math.random() * 60, TILE_X),
+    y: snap(38 + Math.random() * 28, TILE_Y),
+  };
+}
+
+function darken(hex: string, amount = 40) {
   const num = parseInt(hex.slice(1), 16);
   const r = Math.max(0, (num >> 16) - amount);
   const g = Math.max(0, ((num >> 8) & 0xff) - amount);
@@ -31,54 +51,119 @@ function darken(hex: string, amount = 30) {
   return `rgb(${r},${g},${b})`;
 }
 
-// Random within bounds: 8–78% x, 40–68% y (walkable floor area)
-function randomPos() {
-  return {
-    x: 8 + Math.random() * 70,
-    y: 40 + Math.random() * 28,
-  };
+// HD pixel-art avatar — small viewBox (16×20) rendered large for crisp pixel look
+function PixelAvatar({ color, dark, visor, flipped }: { color: string; dark: string; visor: string; flipped: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 16 20"
+      width={64}
+      height={80}
+      style={{
+        display: 'block',
+        margin: '0 auto',
+        transform: flipped ? 'scaleX(-1)' : undefined,
+        imageRendering: 'pixelated',
+        shapeRendering: 'crispEdges',
+      }}
+    >
+      {/* Shadow */}
+      <rect x="3" y="19" width="10" height="1" fill="rgba(0,0,0,0.4)" />
+      {/* Head — top row */}
+      <rect x="3" y="0" width="8" height="1" fill={color} />
+      {/* Head — main block */}
+      <rect x="2" y="1" width="10" height="5" fill={color} />
+      {/* Head — bottom row */}
+      <rect x="3" y="6" width="8" height="1" fill={color} />
+      {/* Visor (right side of head) */}
+      <rect x="6" y="1" width="5" height="1" fill={visor} />
+      <rect x="6" y="2" width="5" height="3" fill={visor} />
+      <rect x="7" y="5" width="3" height="1" fill={visor} />
+      {/* Visor shine pixel */}
+      <rect x="6" y="2" width="2" height="1" fill="white" opacity="0.55" />
+      {/* Body */}
+      <rect x="2" y="7" width="10" height="8" fill={color} />
+      {/* Body shading — bottom strip */}
+      <rect x="2" y="14" width="10" height="1" fill={dark} opacity="0.35" />
+      {/* Backpack */}
+      <rect x="12" y="8" width="2" height="6" fill={dark} />
+      {/* Left leg */}
+      <rect x="3" y="15" width="3" height="4" fill={dark} />
+      {/* Right leg */}
+      <rect x="8" y="15" width="3" height="4" fill={dark} />
+      {/* Leg top highlight */}
+      <rect x="3" y="15" width="3" height="1" fill={color} opacity="0.25" />
+      <rect x="8" y="15" width="3" height="1" fill={color} opacity="0.25" />
+    </svg>
+  );
 }
 
 export function Avatar2D({
   config,
   currentMessage,
   isSpeaking,
+  isTyping,
+  isComplete,
   canTakeActions,
   onAction,
   onHoverStart,
   onHoverEnd,
 }: Avatar2DProps) {
-  const [pos, setPos] = useState({ x: config.startX, y: config.startY });
+  const [pos, setPos] = useState({
+    x: snap(config.startX, TILE_X),
+    y: snap(config.startY, TILE_Y),
+  });
   const [flipped, setFlipped] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Random movement when not speaking
+  const posRef = useRef(pos);
+  posRef.current = pos;
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stoppedRef = useRef(false);
+
   useEffect(() => {
-    if (isSpeaking) {
-      if (intervalRef.current) clearTimeout(intervalRef.current);
+    stoppedRef.current = isSpeaking || isTyping || isComplete;
+
+    if (stoppedRef.current) {
+      if (timerRef.current) clearTimeout(timerRef.current);
       return;
     }
 
-    function scheduleMove() {
-      const delay = 2000 + Math.random() * 3000;
-      intervalRef.current = setTimeout(() => {
-        const next = randomPos();
-        setFlipped((prev) => {
-          // flip if moving left
-          return next.x < pos.x ? true : next.x > pos.x ? false : prev;
-        });
-        setPos(next);
-        scheduleMove();
-      }, delay);
+    function walkTo(dest: { x: number; y: number }) {
+      if (stoppedRef.current) return;
+
+      const cur = posRef.current;
+      const dx = dest.x - cur.x;
+      const dy = dest.y - cur.y;
+
+      if (dx === 0 && dy === 0) {
+        // Arrived — pause then pick new destination
+        const pause = PAUSE_MIN + Math.random() * (PAUSE_MAX - PAUSE_MIN);
+        timerRef.current = setTimeout(() => walkTo(randomDest()), pause);
+        return;
+      }
+
+      // Move one tile toward destination — prefer horizontal first
+      let nextX = cur.x;
+      let nextY = cur.y;
+      if (dx !== 0) {
+        nextX = cur.x + (dx > 0 ? TILE_X : -TILE_X);
+        setFlipped(dx < 0);
+      } else if (dy !== 0) {
+        nextY = cur.y + (dy > 0 ? TILE_Y : -TILE_Y);
+      }
+
+      setPos({ x: nextX, y: nextY });
+      timerRef.current = setTimeout(() => walkTo(dest), STEP_MS);
     }
 
-    scheduleMove();
-    return () => { if (intervalRef.current) clearTimeout(intervalRef.current); };
+    walkTo(randomDest());
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSpeaking]);
+  }, [isSpeaking, isTyping, isComplete]);
 
   const dark = darken(config.color, 40);
   const visor = '#aee6f8';
+
+  const hasBubble = (isSpeaking || isTyping) && !isComplete;
 
   return (
     <div
@@ -87,19 +172,20 @@ export function Avatar2D({
         left: `${pos.x}%`,
         top: `${pos.y}%`,
         transform: 'translate(-50%, -100%)',
-        transition: isSpeaking ? 'none' : 'left 2s ease-in-out, top 2s ease-in-out',
-        zIndex: 10,
+        // No CSS transition — instant snap per tile
+        zIndex: hasBubble ? 50 : 10,
         width: 48,
       }}
     >
-      {/* Speech bubble above avatar */}
-      {currentMessage && isSpeaking && (
+      {/* Speech bubble — shows during typing (dots) and speaking (text), hidden when complete */}
+      {hasBubble && (
         <SpeechBubble
-          content={currentMessage.content}
-          messageId={currentMessage.id}
-          isDeleted={currentMessage.isDeleted}
-          hasWarning={currentMessage.hasWarning}
-          canTakeActions={canTakeActions}
+          content={isTyping ? '' : (currentMessage?.content ?? '')}
+          messageId={currentMessage?.id ?? ''}
+          isTyping={isTyping}
+          isDeleted={isTyping ? false : (currentMessage?.isDeleted ?? false)}
+          hasWarning={isTyping ? false : (currentMessage?.hasWarning ?? false)}
+          canTakeActions={canTakeActions && !isTyping}
           onAction={onAction}
           onHoverStart={onHoverStart}
           onHoverEnd={onHoverEnd}
@@ -108,35 +194,22 @@ export function Avatar2D({
 
       {/* Name tag */}
       <div
-        className="text-center text-[10px] font-bold mb-0.5 truncate"
-        style={{ color: config.color, textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
+        style={{
+          textAlign: 'center',
+          fontSize: 9,
+          fontFamily: 'monospace',
+          fontWeight: 'bold',
+          marginBottom: 2,
+          color: config.color,
+          textShadow: '0 1px 4px rgba(0,0,0,0.8)',
+          imageRendering: 'pixelated',
+          whiteSpace: 'nowrap',
+        }}
       >
         {config.name}
       </div>
 
-      {/* Among Us style avatar SVG */}
-      <svg
-        viewBox="0 0 40 50"
-        width={48}
-        height={60}
-        style={{ transform: flipped ? 'scaleX(-1)' : 'scaleX(1)', display: 'block', margin: '0 auto' }}
-      >
-        {/* Shadow */}
-        <ellipse cx="20" cy="49" rx="12" ry="2.5" fill="rgba(0,0,0,0.3)" />
-        {/* Body */}
-        <ellipse cx="20" cy="36" rx="14" ry="15" fill={config.color} />
-        {/* Head */}
-        <circle cx="20" cy="17" r="13" fill={config.color} />
-        {/* Visor */}
-        <ellipse cx="22" cy="14" rx="8.5" ry="7" fill={visor} opacity="0.85" />
-        {/* Visor shine */}
-        <ellipse cx="19" cy="11" rx="3" ry="2.5" fill="white" opacity="0.4" />
-        {/* Backpack */}
-        <rect x="32" y="27" width="7" height="13" rx="3" fill={dark} />
-        {/* Legs */}
-        <rect x="12" y="47" width="6" height="4" rx="2" fill={dark} />
-        <rect x="22" y="47" width="6" height="4" rx="2" fill={dark} />
-      </svg>
+      <PixelAvatar color={config.color} dark={dark} visor={visor} flipped={flipped} />
     </div>
   );
 }
