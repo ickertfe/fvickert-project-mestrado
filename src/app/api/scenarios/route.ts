@@ -8,7 +8,11 @@ export async function GET(request: NextRequest) {
     const activeOnly = searchParams.get('active') === 'true';
 
     const scenarios = await prisma.scenario.findMany({
-      where: activeOnly ? { isActive: true } : undefined,
+      where: {
+        ...(activeOnly ? { isActive: true } : {}),
+        // Exclude game-lobby scenarios from the normal BCRT flow
+        NOT: { id: { startsWith: 'game-' } },
+      },
       include: {
         _count: {
           select: {
