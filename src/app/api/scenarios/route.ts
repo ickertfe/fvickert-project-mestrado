@@ -6,12 +6,15 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get('active') === 'true';
+    const gameOnly = searchParams.get('game') === 'true';
 
     const scenarios = await prisma.scenario.findMany({
       where: {
         ...(activeOnly ? { isActive: true } : {}),
-        // Exclude game-lobby scenarios from the normal BCRT flow
-        NOT: { id: { startsWith: 'game-' } },
+        // game=true → only game-* scenarios; otherwise exclude them (normal BCRT flow)
+        ...(gameOnly
+          ? { id: { startsWith: 'game-' } }
+          : { NOT: { id: { startsWith: 'game-' } } }),
       },
       include: {
         _count: {

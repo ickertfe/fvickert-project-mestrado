@@ -52,10 +52,10 @@ export default function GameLobbyLanding() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/scenarios?active=true').then((r) => r.json()),
+      fetch('/api/scenarios?active=true&game=true').then((r) => r.json()),
       fetch('/api/config').then((r) => r.json()),
     ]).then(([scenariosData, configData]) => {
-      setScenarios((scenariosData as ScenarioListItem[]).filter((s) => s.id.startsWith('game-')));
+      setScenarios(scenariosData as ScenarioListItem[]);
       setScenariosLoaded(true);
       const rid = configData.requireUserIdentification ?? false;
       setRequireId(rid);
