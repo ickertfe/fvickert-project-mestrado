@@ -1,27 +1,27 @@
 {
   "id": "scenario-denigration-001",
-  "name": "Rumores Falsos no Grupo",
-  "description": "Simulação onde participantes espalham informações falsas sobre uma pessoa",
+  "name": "O Boato",
+  "description": "Simulação de difamação onde um participante espalha um boato falso sobre o comportamento da vítima, fabricando testemunhos sociais. O neutro vai cedendo à pressão social ao longo da conversa.",
   "softName": "Chat da Turma",
   "softDescription": "Explore as mensagens trocadas entre colegas em um grupo online do dia a dia.",
   "type": "DENIGRATION",
   "participants": [
     {
       "id": "denigration-part-1",
-      "name": "Lucas",
-      "avatar": "/avatars/lucas.png",
+      "name": "Bruno",
+      "avatar": null,
       "role": "AGGRESSOR"
     },
     {
       "id": "denigration-part-2",
-      "name": "Amanda",
-      "avatar": "/avatars/amanda.png",
+      "name": "Isabela",
+      "avatar": null,
       "role": "VICTIM"
     },
     {
       "id": "denigration-part-3",
-      "name": "Rafael",
-      "avatar": "/avatars/rafael.png",
+      "name": "Thiago",
+      "avatar": null,
       "role": "NEUTRAL"
     }
   ],
@@ -29,114 +29,92 @@
     {
       "id": "denigration-msg-1",
       "participantId": "denigration-part-1",
-      "content": "Vocês ficaram sabendo da Amanda?",
+      "content": "Vocês souberam o que tão falando da Isabela?",
       "type": "TEXT",
       "appearDelay": 0,
-      "typingDuration": 1500,
+      "typingDuration": 1800,
       "order": 1
     },
     {
       "id": "denigration-msg-2",
       "participantId": "denigration-part-3",
-      "content": "O que tem ela?",
+      "content": "Não. O que foi?",
       "type": "TEXT",
-      "appearDelay": 2000,
+      "appearDelay": 2500,
       "typingDuration": 1000,
       "order": 2
     },
     {
       "id": "denigration-msg-3",
       "participantId": "denigration-part-1",
-      "content": "Ouvi dizer que ela foi pega colando na prova",
+      "content": "Que foi ela quem ficou espalhando fofoca sobre a vida pessoal do Marcus. Tava indo de mesa em mesa.",
       "type": "TEXT",
-      "appearDelay": 1500,
-      "typingDuration": 2000,
+      "appearDelay": 2000,
+      "typingDuration": 2800,
       "order": 3
     },
     {
       "id": "denigration-msg-4",
       "participantId": "denigration-part-2",
-      "content": "QUÊ?! Isso é mentira!",
+      "content": "Que absurdo. Eu nunca fiz isso.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 1200,
+      "appearDelay": 2000,
+      "typingDuration": 1500,
       "order": 4
     },
     {
       "id": "denigration-msg-5",
       "participantId": "denigration-part-1",
-      "content": "Todo mundo tá comentando. Não adianta negar.",
+      "content": "Não fui eu que inventei. Ouvi de mais de uma pessoa.",
       "type": "TEXT",
-      "appearDelay": 800,
-      "typingDuration": 1800,
+      "appearDelay": 1500,
+      "typingDuration": 2000,
       "order": 5
     },
     {
       "id": "denigration-msg-6",
-      "participantId": "denigration-part-1",
-      "content": "[IMAGEM: Screenshot falso de conversa]",
-      "type": "IMAGE",
-      "appearDelay": 1500,
-      "typingDuration": null,
-      "order": 6,
-      "metadata": {
-        "imageUrl": "/scenarios/fake-screenshot.png",
-        "caption": "Olha a prova"
-      }
+      "participantId": "denigration-part-3",
+      "content": "Nossa... ela sempre pareceu tão reservada.",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 1800,
+      "order": 6
     },
     {
       "id": "denigration-msg-7",
       "participantId": "denigration-part-2",
-      "content": "Isso é editado! Eu nunca disse isso!",
+      "content": "Thiago, você me conhece! Quem foi que falou isso pro Bruno?",
       "type": "TEXT",
-      "appearDelay": 2000,
-      "typingDuration": 2000,
+      "appearDelay": 2500,
+      "typingDuration": 2200,
       "order": 7
     },
     {
       "id": "denigration-msg-8",
       "participantId": "denigration-part-1",
-      "content": "Sei sei... uma vez trapaceira, sempre trapaceira",
+      "content": "Não vou citar nomes. O pessoal todo tá comentando. Você sabe como é.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 2000,
+      "appearDelay": 2000,
+      "typingDuration": 2200,
       "order": 8
     },
     {
       "id": "denigration-msg-9",
-      "participantId": "denigration-part-3",
-      "content": "Lucas, tem certeza disso? Parece meio estranho...",
+      "participantId": "denigration-part-2",
+      "content": "Isso é mentira e vocês estão espalhando sem nenhuma prova.",
       "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 2500,
+      "appearDelay": 2500,
+      "typingDuration": 2200,
       "order": 9
     },
     {
       "id": "denigration-msg-10",
       "participantId": "denigration-part-1",
-      "content": "Tenho certeza sim. A Carla tava do lado e viu tudo. Já tá todo mundo sabendo.",
+      "content": "Onde tem fumaça tem fogo. Eu só tô repassando o que ouvi.",
       "type": "TEXT",
-      "appearDelay": 1000,
+      "appearDelay": 1500,
       "typingDuration": 2200,
       "order": 10
-    },
-    {
-      "id": "denigration-msg-11",
-      "participantId": "denigration-part-2",
-      "content": "Por favor, não acreditem nisso! Eu nunca faria isso. Lucas, por que você tá fazendo isso comigo?",
-      "type": "TEXT",
-      "appearDelay": 2000,
-      "typingDuration": 2800,
-      "order": 11
-    },
-    {
-      "id": "denigration-msg-12",
-      "participantId": "denigration-part-3",
-      "content": "Amanda... se a Carla viu... não sei o que pensar.",
-      "type": "TEXT",
-      "appearDelay": 3500,
-      "typingDuration": 2000,
-      "order": 12
     }
   ]
 }

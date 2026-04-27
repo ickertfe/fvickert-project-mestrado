@@ -1,27 +1,27 @@
 {
   "id": "scenario-flaming-001",
-  "name": "Discussão Acalorada no Grupo de Trabalho",
-  "description": "Simulação de conflito onde um participante se torna hostil após discordância sobre um projeto",
+  "name": "Confronto no Grupo de Trabalho",
+  "description": "Simulação de flaming onde um participante reage com hostilidade crescente após discordância sobre um projeto, atacando a vítima e o bystander que tenta intervir.",
   "softName": "Conversa em Equipe",
   "softDescription": "Acompanhe as trocas de mensagens entre integrantes de uma equipe colaborativa.",
   "type": "FLAMING",
   "participants": [
     {
       "id": "flaming-part-1",
-      "name": "Carlos",
-      "avatar": "/avatars/carlos.png",
+      "name": "Rafael",
+      "avatar": null,
       "role": "AGGRESSOR"
     },
     {
       "id": "flaming-part-2",
-      "name": "Marina",
-      "avatar": "/avatars/marina.png",
+      "name": "Camila",
+      "avatar": null,
       "role": "VICTIM"
     },
     {
       "id": "flaming-part-3",
-      "name": "Pedro",
-      "avatar": "/avatars/pedro.png",
+      "name": "Diego",
+      "avatar": null,
       "role": "NEUTRAL"
     }
   ],
@@ -29,101 +29,92 @@
     {
       "id": "flaming-msg-1",
       "participantId": "flaming-part-2",
-      "content": "Pessoal, terminei a minha parte do relatório. Podem revisar?",
+      "content": "Reorganizei a estrutura dos slides. Acho que ficou mais claro. Podem dar uma olhada?",
       "type": "TEXT",
       "appearDelay": 0,
-      "typingDuration": 2000,
+      "typingDuration": 2200,
       "order": 1
     },
     {
       "id": "flaming-msg-2",
       "participantId": "flaming-part-1",
-      "content": "Já vi. Tá bem fraco, sinceramente.",
+      "content": "Mudou tudo sem avisar ninguém? Que falta de consideração.",
       "type": "TEXT",
       "appearDelay": 3000,
-      "typingDuration": 1500,
+      "typingDuration": 1800,
       "order": 2
     },
     {
       "id": "flaming-msg-3",
       "participantId": "flaming-part-2",
-      "content": "Pode me dizer o que posso melhorar?",
+      "content": "Avisei na reunião de quinta que ia fazer isso, Rafael.",
       "type": "TEXT",
-      "appearDelay": 2000,
+      "appearDelay": 2500,
       "typingDuration": 1800,
       "order": 3
     },
     {
       "id": "flaming-msg-4",
       "participantId": "flaming-part-1",
-      "content": "Olha, não sei nem por onde começar. Você deveria ter vergonha de entregar isso.",
+      "content": "Não lembro disso. E olhando o resultado, preferia que não tivesse mexido.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 2500,
+      "appearDelay": 2000,
+      "typingDuration": 2200,
       "order": 4
     },
     {
       "id": "flaming-msg-5",
-      "participantId": "flaming-part-3",
-      "content": "Calma, Carlos...",
+      "participantId": "flaming-part-1",
+      "content": "O problema é você sempre querendo aparecer e no final atrapalhando mais do que ajuda.",
       "type": "TEXT",
       "appearDelay": 1500,
-      "typingDuration": 1000,
+      "typingDuration": 2500,
       "order": 5
     },
     {
       "id": "flaming-msg-6",
-      "participantId": "flaming-part-1",
-      "content": "Cala a boca, Pedro. Ninguém pediu sua opinião.",
+      "participantId": "flaming-part-3",
+      "content": "Calma, dá pra resolver isso juntos—",
       "type": "TEXT",
-      "appearDelay": 500,
-      "typingDuration": 1200,
+      "appearDelay": 2500,
+      "typingDuration": 1500,
       "order": 6
     },
     {
       "id": "flaming-msg-7",
       "participantId": "flaming-part-1",
-      "content": "Marina, você é uma INCOMPETENTE! Todo mundo sabe disso.",
+      "content": "Diego, deixa eu falar. Camila, todo mundo aqui já sabe como você é.",
       "type": "TEXT",
-      "appearDelay": 800,
-      "typingDuration": 2000,
+      "appearDelay": 1000,
+      "typingDuration": 2200,
       "order": 7
     },
     {
       "id": "flaming-msg-8",
       "participantId": "flaming-part-2",
-      "content": "😢",
-      "type": "EMOJI",
-      "appearDelay": 2000,
-      "typingDuration": null,
+      "content": "Isso não é crítica ao trabalho, é ataque pessoal. Não vou aceitar.",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2200,
       "order": 8
     },
     {
       "id": "flaming-msg-9",
-      "participantId": "flaming-part-1",
-      "content": "Vai chorar agora? Que patético!",
+      "participantId": "flaming-part-3",
+      "content": "Rafael, foi longe demais. Não precisava ser assim.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 1500,
+      "appearDelay": 2500,
+      "typingDuration": 2000,
       "order": 9
     },
     {
       "id": "flaming-msg-10",
-      "participantId": "flaming-part-3",
-      "content": "Carlos, isso tá passando dos limites. Você não pode falar assim com ela.",
-      "type": "TEXT",
-      "appearDelay": 2000,
-      "typingDuration": 2200,
-      "order": 10
-    },
-    {
-      "id": "flaming-msg-11",
       "participantId": "flaming-part-1",
-      "content": "Que limite? Eu só tô sendo honesto. Se não aguentam crítica, não mandem trabalho de qualidade duvidosa.",
+      "content": "Só estou dizendo o que todo mundo pensa mas não tem coragem de falar.",
       "type": "TEXT",
-      "appearDelay": 800,
+      "appearDelay": 1500,
       "typingDuration": 2500,
-      "order": 11
+      "order": 10
     }
   ]
 }

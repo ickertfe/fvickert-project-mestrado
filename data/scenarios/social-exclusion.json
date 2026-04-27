@@ -1,27 +1,27 @@
 {
   "id": "scenario-exclusion-001",
-  "name": "Exclusão do Grupo de Amigos",
-  "description": "Simulação onde participantes deliberadamente excluem uma pessoa das conversas e planejamentos",
+  "name": "Fora do Grupo",
+  "description": "Simulação de exclusão social onde dois participantes planejam um evento na frente da vítima, rejeitam sua tentativa de participar e a ignoram completamente ao retomar o planejamento.",
   "softName": "Rede de Convivência",
   "softDescription": "Observe as interações cotidianas entre participantes de um grupo de convivência.",
   "type": "SOCIAL_EXCLUSION",
   "participants": [
     {
       "id": "exclusion-part-1",
-      "name": "Julia",
-      "avatar": "/avatars/julia.png",
+      "name": "Ana",
+      "avatar": null,
       "role": "AGGRESSOR"
     },
     {
       "id": "exclusion-part-2",
-      "name": "Fernanda",
-      "avatar": "/avatars/fernanda.png",
+      "name": "Renata",
+      "avatar": null,
       "role": "VICTIM"
     },
     {
       "id": "exclusion-part-3",
-      "name": "Beatriz",
-      "avatar": "/avatars/beatriz.png",
+      "name": "Bianca",
+      "avatar": null,
       "role": "AGGRESSOR"
     }
   ],
@@ -29,110 +29,92 @@
     {
       "id": "exclusion-msg-1",
       "participantId": "exclusion-part-1",
-      "content": "Gente, vamos combinar a festa de aniversário da Bia?",
+      "content": "Bia, confirmei o jantar pra sexta! Luísa e Carol já tão dentro 🎉",
       "type": "TEXT",
       "appearDelay": 0,
-      "typingDuration": 2000,
+      "typingDuration": 2200,
       "order": 1
     },
     {
       "id": "exclusion-msg-2",
-      "participantId": "exclusion-part-2",
-      "content": "Oba! Posso ajudar a organizar!",
+      "participantId": "exclusion-part-3",
+      "content": "Perfeito! Mal posso esperar",
       "type": "TEXT",
       "appearDelay": 2000,
-      "typingDuration": 1500,
+      "typingDuration": 1200,
       "order": 2
     },
     {
       "id": "exclusion-msg-3",
-      "participantId": "exclusion-part-3",
-      "content": "Julia, vamos conversar no outro grupo",
+      "participantId": "exclusion-part-2",
+      "content": "Que jantar? Posso ir também?",
       "type": "TEXT",
-      "appearDelay": 1500,
-      "typingDuration": 1800,
+      "appearDelay": 2500,
+      "typingDuration": 1500,
       "order": 3
     },
     {
       "id": "exclusion-msg-4",
       "participantId": "exclusion-part-1",
-      "content": "Boa ideia 👍",
+      "content": "Ah... é uma coisa mais fechada, Renata.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 800,
+      "appearDelay": 3000,
+      "typingDuration": 1800,
       "order": 4
     },
     {
       "id": "exclusion-msg-5",
       "participantId": "exclusion-part-2",
-      "content": "Que outro grupo? Posso entrar?",
+      "content": "Fechada como? A gente sempre sai junto...",
       "type": "TEXT",
-      "appearDelay": 2500,
-      "typingDuration": 1500,
+      "appearDelay": 3500,
+      "typingDuration": 1800,
       "order": 5
     },
     {
       "id": "exclusion-msg-6",
-      "participantId": "exclusion-part-1",
-      "content": "É um grupo só nosso, Fernanda",
+      "participantId": "exclusion-part-3",
+      "content": "Esse é um grupo diferente. Não é nada contra você.",
       "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 1200,
+      "appearDelay": 2500,
+      "typingDuration": 2000,
       "order": 6
     },
     {
       "id": "exclusion-msg-7",
-      "participantId": "exclusion-part-3",
-      "content": "É, não é pra todo mundo não",
+      "participantId": "exclusion-part-2",
+      "content": "Aconteceu alguma coisa? Me fala se eu fiz algo errado.",
       "type": "TEXT",
-      "appearDelay": 1000,
-      "typingDuration": 1500,
+      "appearDelay": 4000,
+      "typingDuration": 2200,
       "order": 7
     },
     {
       "id": "exclusion-msg-8",
-      "participantId": "exclusion-part-2",
-      "content": "Mas eu pensei que éramos amigas...",
+      "participantId": "exclusion-part-1",
+      "content": "Não aconteceu nada. Às vezes as pessoas querem sair em grupos menores. Não precisa fazer drama.",
       "type": "TEXT",
-      "appearDelay": 4000,
-      "typingDuration": 2000,
+      "appearDelay": 3500,
+      "typingDuration": 2800,
       "order": 8
     },
     {
       "id": "exclusion-msg-9",
-      "participantId": "exclusion-part-1",
-      "content": "🙄",
-      "type": "EMOJI",
-      "appearDelay": 1500,
-      "typingDuration": null,
+      "participantId": "exclusion-part-3",
+      "content": "Ana, o restaurante italiano de março tá confirmado?",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 2000,
       "order": 9
     },
     {
       "id": "exclusion-msg-10",
-      "participantId": "exclusion-part-2",
-      "content": "Tá bem... só achei estranho, a gente sempre fez tudo junto.",
-      "type": "TEXT",
-      "appearDelay": 4000,
-      "typingDuration": 2000,
-      "order": 10
-    },
-    {
-      "id": "exclusion-msg-11",
-      "participantId": "exclusion-part-3",
-      "content": "Para de drama, Fernanda. Não é nada demais.",
+      "participantId": "exclusion-part-1",
+      "content": "Confirmado! Vai ser ótimo 😊",
       "type": "TEXT",
       "appearDelay": 1500,
-      "typingDuration": 1500,
-      "order": 11
-    },
-    {
-      "id": "exclusion-msg-12",
-      "participantId": "exclusion-part-1",
-      "content": "Bia, confirmei o bolo! 🎂 Vai ser incrível",
-      "type": "TEXT",
-      "appearDelay": 2000,
-      "typingDuration": 1800,
-      "order": 12
+      "typingDuration": 1200,
+      "order": 10
     }
   ]
 }
