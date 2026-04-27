@@ -1,7 +1,7 @@
 {
   "id": "scenario-denigration-001",
   "name": "O Boato",
-  "description": "Simulação de difamação onde um participante espalha um boato falso sobre o comportamento da vítima, fabricando testemunhos sociais. O neutro vai cedendo à pressão social ao longo da conversa.",
+  "description": "Simulação de difamação onde um participante espalha um boato falso sobre o comportamento da vítima, fabricando testemunhos sociais. O neutro forma opinião negativa antes de ouvir a vítima e vai cedendo progressivamente à pressão social.",
   "softName": "Chat da Turma",
   "softDescription": "Explore as mensagens trocadas entre colegas em um grupo online do dia a dia.",
   "type": "DENIGRATION",
@@ -55,38 +55,38 @@
     },
     {
       "id": "denigration-msg-4",
-      "participantId": "denigration-part-2",
-      "content": "Que absurdo. Eu nunca fiz isso.",
-      "type": "TEXT",
-      "appearDelay": 2000,
-      "typingDuration": 1500,
-      "order": 4
-    },
-    {
-      "id": "denigration-msg-5",
-      "participantId": "denigration-part-1",
-      "content": "Não fui eu que inventei. Ouvi de mais de uma pessoa.",
-      "type": "TEXT",
-      "appearDelay": 1500,
-      "typingDuration": 2000,
-      "order": 5
-    },
-    {
-      "id": "denigration-msg-6",
       "participantId": "denigration-part-3",
       "content": "Nossa... ela sempre pareceu tão reservada.",
       "type": "TEXT",
       "appearDelay": 3000,
       "typingDuration": 1800,
+      "order": 4
+    },
+    {
+      "id": "denigration-msg-5",
+      "participantId": "denigration-part-2",
+      "content": "Que absurdo. Eu nunca fiz isso.",
+      "type": "TEXT",
+      "appearDelay": 2000,
+      "typingDuration": 1500,
+      "order": 5
+    },
+    {
+      "id": "denigration-msg-6",
+      "participantId": "denigration-part-1",
+      "content": "Não fui eu que inventei. Ouvi de mais de uma pessoa.",
+      "type": "TEXT",
+      "appearDelay": 1500,
+      "typingDuration": 2000,
       "order": 6
     },
     {
       "id": "denigration-msg-7",
       "participantId": "denigration-part-2",
-      "content": "Thiago, você me conhece! Quem foi que falou isso pro Bruno?",
+      "content": "Quem disse isso? Me aponta uma pessoa.",
       "type": "TEXT",
-      "appearDelay": 2500,
-      "typingDuration": 2200,
+      "appearDelay": 2000,
+      "typingDuration": 1500,
       "order": 7
     },
     {
@@ -94,27 +94,45 @@
       "participantId": "denigration-part-1",
       "content": "Não vou citar nomes. O pessoal todo tá comentando. Você sabe como é.",
       "type": "TEXT",
-      "appearDelay": 2000,
+      "appearDelay": 1500,
       "typingDuration": 2200,
       "order": 8
     },
     {
       "id": "denigration-msg-9",
-      "participantId": "denigration-part-2",
-      "content": "Isso é mentira e vocês estão espalhando sem nenhuma prova.",
+      "participantId": "denigration-part-3",
+      "content": "Isabela, sendo honesto... quando fica esse volume de comentário assim...",
       "type": "TEXT",
-      "appearDelay": 2500,
+      "appearDelay": 3500,
       "typingDuration": 2200,
       "order": 9
     },
     {
       "id": "denigration-msg-10",
+      "participantId": "denigration-part-2",
+      "content": "Thiago, você me conhece há anos. Não pode acreditar nisso sem nenhuma prova.",
+      "type": "TEXT",
+      "appearDelay": 2500,
+      "typingDuration": 2500,
+      "order": 10
+    },
+    {
+      "id": "denigration-msg-11",
       "participantId": "denigration-part-1",
       "content": "Onde tem fumaça tem fogo. Eu só tô repassando o que ouvi.",
       "type": "TEXT",
       "appearDelay": 1500,
       "typingDuration": 2200,
-      "order": 10
+      "order": 11
+    },
+    {
+      "id": "denigration-msg-12",
+      "participantId": "denigration-part-3",
+      "content": "Eu honestamente não sei o que pensar.",
+      "type": "TEXT",
+      "appearDelay": 4000,
+      "typingDuration": 2000,
+      "order": 12
     }
   ]
 }

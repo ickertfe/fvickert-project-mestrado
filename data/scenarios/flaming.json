@@ -73,48 +73,57 @@
     },
     {
       "id": "flaming-msg-6",
-      "participantId": "flaming-part-3",
-      "content": "Calma, dá pra resolver isso juntos—",
+      "participantId": "flaming-part-2",
+      "content": "O que isso significa? Você tem algum problema específico com o meu trabalho?",
       "type": "TEXT",
-      "appearDelay": 2500,
-      "typingDuration": 1500,
+      "appearDelay": 3000,
+      "typingDuration": 2200,
       "order": 6
     },
     {
       "id": "flaming-msg-7",
       "participantId": "flaming-part-1",
-      "content": "Diego, deixa eu falar. Camila, todo mundo aqui já sabe como você é.",
+      "content": "Tenho sim: você é difícil de trabalhar. Todo mundo aqui já sabe disso.",
       "type": "TEXT",
-      "appearDelay": 1000,
+      "appearDelay": 1500,
       "typingDuration": 2200,
       "order": 7
     },
     {
       "id": "flaming-msg-8",
-      "participantId": "flaming-part-2",
-      "content": "Isso não é crítica ao trabalho, é ataque pessoal. Não vou aceitar.",
+      "participantId": "flaming-part-3",
+      "content": "Calma, dá pra resolver isso sem atacar ninguém—",
       "type": "TEXT",
-      "appearDelay": 3000,
-      "typingDuration": 2200,
+      "appearDelay": 2500,
+      "typingDuration": 1800,
       "order": 8
     },
     {
       "id": "flaming-msg-9",
-      "participantId": "flaming-part-3",
-      "content": "Rafael, foi longe demais. Não precisava ser assim.",
+      "participantId": "flaming-part-1",
+      "content": "Diego, não me interrompe. Camila, se não aguenta feedback, não manda trabalho.",
       "type": "TEXT",
-      "appearDelay": 2500,
-      "typingDuration": 2000,
+      "appearDelay": 1000,
+      "typingDuration": 2500,
       "order": 9
     },
     {
       "id": "flaming-msg-10",
+      "participantId": "flaming-part-2",
+      "content": "Isso não é feedback, é ataque pessoal. Não vou aceitar.",
+      "type": "TEXT",
+      "appearDelay": 3000,
+      "typingDuration": 2000,
+      "order": 10
+    },
+    {
+      "id": "flaming-msg-11",
       "participantId": "flaming-part-1",
       "content": "Só estou dizendo o que todo mundo pensa mas não tem coragem de falar.",
       "type": "TEXT",
       "appearDelay": 1500,
       "typingDuration": 2500,
-      "order": 10
+      "order": 11
     }
   ]
 }
