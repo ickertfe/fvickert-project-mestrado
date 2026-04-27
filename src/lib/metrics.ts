@@ -170,6 +170,7 @@ export function aggregateMetrics(sessions: Session[]): AggregatedMetrics {
     MARK_ATTENTION: 0,
     ADD_NOTE: 0,
     UNDO: 0,
+    RESTART_SIMULATION: 0,
   };
 
   metrics.forEach((m) => {

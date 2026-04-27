@@ -58,22 +58,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify message exists
-    const message = await prisma.message.findUnique({
-      where: { id: messageId },
-    });
+    // Verify message exists (only if messageId provided)
+    if (messageId) {
+      const message = await prisma.message.findUnique({
+        where: { id: messageId },
+      });
 
-    if (!message) {
-      return NextResponse.json(
-        { error: 'Message not found' },
-        { status: 404 }
-      );
+      if (!message) {
+        return NextResponse.json(
+          { error: 'Message not found' },
+          { status: 404 }
+        );
+      }
     }
 
     const action = await prisma.messageAction.create({
       data: {
         sessionId,
-        messageId,
+        messageId: messageId ?? undefined,
         type,
         metadata: metadata ? JSON.stringify(metadata) : null,
       },

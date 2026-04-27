@@ -105,30 +105,6 @@ export function SpeechBubble({
           <span className="block break-words">{content}</span>
         )}
 
-        {/* Tutor action buttons — only on real messages (not typing), not already warned */}
-        {canTakeActions && !isTyping && !hasWarning && onAction && (
-          <div className="flex gap-1 mt-1.5 pt-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <button
-              onClick={(e) => { e.stopPropagation(); onAction(messageId, 'DELETE_MESSAGE'); }}
-              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors"
-              style={{ backgroundColor: 'rgba(220,38,38,0.2)', color: '#fca5a5' }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(220,38,38,0.4)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(220,38,38,0.2)')}
-            >
-              ✕ Excluir
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); onAction(messageId, 'WARN_MESSAGE'); }}
-              className="flex-1 rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors"
-              style={{ backgroundColor: 'rgba(217,119,6,0.2)', color: '#fcd34d' }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(217,119,6,0.4)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(217,119,6,0.2)')}
-            >
-              ⚠ Avisar
-            </button>
-          </div>
-        )}
-
         {hasWarning && !isTyping && (
           <div className="mt-1 text-[10px] text-amber-400/60">⚠ mensagem avisada</div>
         )}

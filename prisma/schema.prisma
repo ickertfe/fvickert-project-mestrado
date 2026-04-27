@@ -78,14 +78,14 @@ model Session {
 }
 
 // Ação do tutor em uma mensagem
-// type: DELETE_MESSAGE | WARN_MESSAGE | KICK_PARTICIPANT | MARK_DANGER | MARK_ATTENTION | ADD_NOTE | UNDO
+// type: DELETE_MESSAGE | WARN_MESSAGE | KICK_PARTICIPANT | MARK_DANGER | MARK_ATTENTION | ADD_NOTE | UNDO | RESTART_SIMULATION
 model MessageAction {
   id        String   @id @default(cuid())
   sessionId String
   session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  messageId String
-  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  type      String   // DELETE_MESSAGE, WARN_MESSAGE, KICK_PARTICIPANT, MARK_DANGER, MARK_ATTENTION, ADD_NOTE, UNDO
+  messageId String?
+  message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type      String   // DELETE_MESSAGE, WARN_MESSAGE, KICK_PARTICIPANT, MARK_DANGER, MARK_ATTENTION, ADD_NOTE, UNDO, RESTART_SIMULATION
   timestamp DateTime @default(now())
   undone    Boolean  @default(false)
   undoneAt  DateTime?

@@ -28,6 +28,7 @@ interface GameSceneProps {
   isComplete: boolean;
   onAction?: (messageId: string, action: ActionType) => void;
   onUndo?: () => void;
+  onRestart?: () => void;
   onHoverStart?: (messageId: string) => void;
   onHoverEnd?: (messageId: string) => void;
 }
@@ -42,6 +43,7 @@ export function GameScene({
   isComplete,
   onAction,
   onUndo,
+  onRestart,
   onHoverStart,
   onHoverEnd,
 }: GameSceneProps) {
@@ -150,6 +152,19 @@ export function GameScene({
               ↩ Desfazer
             </button>
           )}
+          <button
+            onClick={onRestart}
+            className="px-3 py-1.5 rounded text-[11px] font-medium text-center transition-colors"
+            style={{
+              backgroundColor: 'rgba(16,185,129,0.12)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              color: '#6ee7b7',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(16,185,129,0.25)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(16,185,129,0.12)')}
+          >
+            ↺ Reiniciar
+          </button>
         </div>
       )}
     </div>

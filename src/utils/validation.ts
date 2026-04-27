@@ -53,7 +53,7 @@ export const createMessageSchema = z.object({
 // Action creation validation
 export const createActionSchema = z.object({
   sessionId: z.string().min(1),
-  messageId: z.string().min(1),
+  messageId: z.string().min(1).optional(),
   type: z.enum([
     'DELETE_MESSAGE',
     'WARN_MESSAGE',
@@ -62,6 +62,7 @@ export const createActionSchema = z.object({
     'MARK_ATTENTION',
     'ADD_NOTE',
     'UNDO',
+    'RESTART_SIMULATION',
   ]),
   metadata: z
     .object({

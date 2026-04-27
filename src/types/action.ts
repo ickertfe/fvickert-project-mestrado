@@ -5,7 +5,8 @@ export type ActionType =
   | 'MARK_DANGER'
   | 'MARK_ATTENTION'
   | 'ADD_NOTE'
-  | 'UNDO';
+  | 'UNDO'
+  | 'RESTART_SIMULATION';
 
 export interface MessageAction {
   id: string;
@@ -98,5 +99,12 @@ export const ACTION_CONFIGS: Record<ActionType, Omit<ActionConfig, 'type'>> = {
     color: 'neutral',
     requiresConfirmation: false,
     description: 'Undo last action',
+  },
+  RESTART_SIMULATION: {
+    label: 'restartSimulation',
+    icon: 'arrow-path',
+    color: 'neutral',
+    requiresConfirmation: false,
+    description: 'Restart the simulation from the beginning',
   },
 };

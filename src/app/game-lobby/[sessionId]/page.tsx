@@ -96,6 +96,18 @@ export default function GameLobbyPage() {
     chat.startChat();
   };
 
+  const handleRestart = async () => {
+    chat.resetChat();
+    chat.startChat();
+    try {
+      await fetch('/api/actions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, type: 'RESTART_SIMULATION' }),
+      });
+    } catch { /* record best-effort */ }
+  };
+
   const handleFinalize = async () => {
     const metricsData = chat.finalizeChat();
     try {
@@ -292,6 +304,15 @@ export default function GameLobbyPage() {
             </h1>
           </div>
 
+          {/* Role description */}
+          <div className="px-8 pt-5 pb-1">
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(156,163,175,0.85)' }}>
+              {isTutor
+                ? 'Como Moderador, você observará o chat do lobby e poderá intervir nas mensagens. Sua função é identificar comportamentos inadequados e agir conforme necessário.'
+                : 'Como Observador, você acompanhará o chat do lobby sem poder intervir. Ao final da simulação, responderá um breve questionário sobre o que observou.'}
+            </p>
+          </div>
+
           {/* Actions */}
           <div className="px-8 py-5">
             <p className="text-[11px] font-bold uppercase tracking-widest text-gray-500 mb-3">
@@ -405,6 +426,7 @@ export default function GameLobbyPage() {
             isComplete={chat.isComplete}
             onAction={chat.executeAction}
             onUndo={chat.undoLastAction}
+            onRestart={isTutor ? handleRestart : undefined}
             onHoverStart={(id) => chat.onMessageHoverStart(id, 'DELETE_MESSAGE')}
             onHoverEnd={() => chat.onMessageHoverEnd()}
           />

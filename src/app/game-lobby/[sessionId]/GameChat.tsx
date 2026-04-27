@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { DisplayMessage } from '@/types/message';
 import type { ChatParticipant } from '@/types/scenario';
 import type { ActionType } from '@/types/action';
@@ -15,18 +16,37 @@ interface GameChatProps {
   onHoverEnd?: (messageId: string) => void;
 }
 
-// CSS tooltip wrapper
+// Portal-based tooltip — escapes any overflow container
 function Tip({ label, children }: { label: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
   return (
-    <div className="relative group/tip">
+    <div
+      ref={ref}
+      onMouseEnter={() => ref.current && setRect(ref.current.getBoundingClientRect())}
+      onMouseLeave={() => setRect(null)}
+    >
       {children}
-      <div
-        className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-1 rounded text-[10px] font-medium whitespace-nowrap opacity-0 group-hover/tip:opacity-100 transition-opacity duration-150"
-        style={{ backgroundColor: 'rgba(15,15,28,0.95)', color: '#e2e8f0', border: '1px solid rgba(139,92,246,0.3)', zIndex: 99 }}
-      >
-        {label}
-        <div className="absolute top-full left-1/2 -translate-x-1/2" style={{ width: 0, height: 0, borderLeft: '4px solid transparent', borderRight: '4px solid transparent', borderTop: '4px solid rgba(139,92,246,0.3)' }} />
-      </div>
+      {rect &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className="pointer-events-none fixed px-2 py-1 rounded text-[10px] font-medium whitespace-nowrap"
+            style={{
+              left: rect.left + rect.width / 2,
+              top: rect.top - 6,
+              transform: 'translate(-50%, -100%)',
+              backgroundColor: 'rgba(15,15,28,0.95)',
+              color: '#e2e8f0',
+              border: '1px solid rgba(139,92,246,0.3)',
+              zIndex: 9999,
+            }}
+          >
+            {label}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
@@ -36,7 +56,7 @@ function ActionsLegend({ onClose }: { onClose: () => void }) {
   return (
     <div
       className="absolute bottom-full right-0 mb-2 w-56 rounded-xl p-4 shadow-2xl"
-      style={{ backgroundColor: 'rgba(15,15,28,0.97)', border: '1px solid rgba(139,92,246,0.3)', zIndex: 99 }}
+      style={{ backgroundColor: 'rgba(15,15,28,0.97)', border: '1px solid rgba(139,92,246,0.3)', zIndex: 9999 }}
     >
       <p className="text-[10px] font-bold uppercase tracking-widest text-violet-400/70 mb-3">Ações de Moderação</p>
       <div className="space-y-2.5">
@@ -73,8 +93,9 @@ export function GameChat({
   const getParticipant = (id: string) => participants.find((p) => p.id === id);
 
   return (
+    // No overflow-hidden on the outer div so tooltips and the legend can escape
     <div
-      className="absolute bottom-4 left-4 w-[480px] max-h-60 flex flex-col rounded-xl overflow-hidden"
+      className="absolute bottom-4 left-4 w-[480px] max-h-60 flex flex-col rounded-xl"
       style={{
         backgroundColor: 'rgba(10,10,24,0.22)',
         border: '1px solid rgba(139,92,246,0.18)',
@@ -84,7 +105,7 @@ export function GameChat({
     >
       {/* Header */}
       <div
-        className="px-3 py-1.5 flex items-center justify-between"
+        className="px-3 py-1.5 flex items-center justify-between shrink-0 rounded-t-xl"
         style={{ borderBottom: '1px solid rgba(139,92,246,0.1)' }}
       >
         <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(167,139,250,0.65)' }}>
@@ -96,7 +117,6 @@ export function GameChat({
               onClick={() => setShowLegend((v) => !v)}
               className="flex items-center justify-center h-5 w-5 rounded-full text-[11px] font-bold transition-colors"
               style={{ color: 'rgba(167,139,250,0.5)', backgroundColor: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.2)' }}
-              title="Legenda das ações"
             >
               ℹ
             </button>
@@ -105,8 +125,8 @@ export function GameChat({
         )}
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-2 py-1.5 space-y-0.5 scrollbar-hide">
+      {/* Messages — scroll only here, rounded bottom */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-1.5 space-y-0.5 scrollbar-hide rounded-b-xl">
         {messages.map((msg) => {
           const participant = getParticipant(msg.participantId);
           const color = avatarColors[msg.participantId] ?? '#9ca3af';
